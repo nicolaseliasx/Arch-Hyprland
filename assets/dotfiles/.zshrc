@@ -167,7 +167,7 @@ zed() {
 
 
 # >>> Codex installer >>>
-export PATH="/home/ncls/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 # <<< Codex installer <<<
 
 
@@ -206,7 +206,7 @@ export PATH="/home/ncls/.local/bin:$PATH"
 
 
 # >>> PEC local worktree flow >>>
-source /home/ncls/.local/share/pec-worktree/loader.zsh
+source $HOME/.local/share/pec-worktree/loader.zsh
 # <<< PEC local worktree flow <<<
 
 # Keep PATH entries unique after all tool initializers have run.
@@ -236,7 +236,7 @@ alias run-plans='codex-pipeline --chat --all'
 
 
 
-export GTK_IM_MODULE=cedilla\nexport QT_IM_MODULE=cedilla\nexport XCOMPOSEFILE=/home/ncls/.XCompose
+export GTK_IM_MODULE=cedilla\nexport QT_IM_MODULE=cedilla\nexport XCOMPOSEFILE=$HOME/.XCompose
 
 
 
@@ -246,5 +246,5 @@ export GTK_IM_MODULE=cedilla\nexport QT_IM_MODULE=cedilla\nexport XCOMPOSEFILE=/
 
 
 # >>> codex-flow managed >>>
-source "/home/ncls/.local/share/codex-flow/shell/init.zsh"
+source "$HOME/.local/share/codex-flow/shell/init.zsh"
 # <<< codex-flow managed <<<
