@@ -1,0 +1,22 @@
+# Build & log artifacts
+Install-Logs/
+*.log
+*.tmp
+*.swp
+*.bak
+*~
+
+# Python cache
+__pycache__/
+*.pyc
+
+# System / Shell history & state
+.cache/
+.local/state/
+.zsh_history
+.zcompdump*
+
+# OS / Editor generated
+.DS_Store
+.vscode/
+.idea/

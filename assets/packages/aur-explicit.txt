@@ -1,0 +1,14 @@
+anytype-bin
+downgrade
+gtk2
+gtk-engine-murrine
+qt5-location
+qt5-webchannel
+qt5-webengine
+slack-desktop-wayland
+spotify
+stremio
+ttf-victor-mono
+visual-studio-code-bin
+wallust
+yay-bin

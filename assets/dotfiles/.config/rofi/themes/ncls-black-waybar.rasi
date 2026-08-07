@@ -1,0 +1,116 @@
+/* Custom black/gray/white Rofi theme matching the current Waybar style. */
+@import "~/.config/rofi/themes/KooL_style-4.rasi"
+
+configuration {
+    modes:                        "drun,window";
+    modi:                         "drun,window";
+    display-drun:                 "apps";
+    display-window:               "win";
+}
+
+* {
+    border-radius:                4px;
+    background:                   rgba(0, 0, 0, 0.88);
+    foreground:                   #ffffff;
+
+    color0:                       #111111;
+    color1:                       #1a1a1a;
+    color8:                       #6b7280;
+    color11:                      #4b5563;
+    color12:                      #2f333a;
+
+    background-alt:               #111111;
+    selected:                     #2f333a;
+    active:                       #d1d5db;
+    urgent:                       #9ca3af;
+
+    border-color:                 #4b5563;
+    handle-color:                 #d1d5db;
+    background-color:             @background;
+    foreground-color:             @foreground;
+    alternate-background:         @background-alt;
+    normal-background:            @background;
+    normal-foreground:            #d1d5db;
+    urgent-background:            #374151;
+    urgent-foreground:            #ffffff;
+    active-background:            #1f2937;
+    active-foreground:            #ffffff;
+    selected-normal-background:   @selected;
+    selected-normal-foreground:   #ffffff;
+    selected-urgent-background:   #4b5563;
+    selected-urgent-foreground:   #ffffff;
+    selected-active-background:   #d1d5db;
+    selected-active-foreground:   #000000;
+    alternate-normal-background:  @background;
+    alternate-normal-foreground:  #d1d5db;
+    alternate-urgent-background:  #374151;
+    alternate-urgent-foreground:  #ffffff;
+    alternate-active-background:  #1f2937;
+    alternate-active-foreground:  #ffffff;
+}
+
+window {
+    border:                       1px solid;
+    border-color:                 @border-color;
+    background-color:             @background;
+}
+
+mainbox,
+custombox {
+    background-color:             transparent;
+}
+
+inputbar {
+    border:                       1px solid;
+    border-color:                 #1f2937;
+    background-color:             @background-alt;
+    text-color:                   @foreground;
+}
+
+entry {
+    background-color:             transparent;
+    text-color:                   @foreground;
+    placeholder-color:            @color8;
+}
+
+textbox-prompt-colon {
+    enabled:                      false;
+}
+
+listview {
+    border-color:                 @border-color;
+    background-color:             transparent;
+}
+
+mode-switcher {
+    background-color:             @background-alt;
+    border-radius:                4px 0px 0px 4px;
+}
+
+button selected {
+    background-color:             @selected;
+    text-color:                   @selected-normal-foreground;
+    border-color:                 @border-color;
+}
+
+element normal.normal {
+    background-color:             transparent;
+    text-color:                   @normal-foreground;
+}
+
+element alternate.normal {
+    background-color:             transparent;
+    text-color:                   @alternate-normal-foreground;
+}
+
+element-text selected,
+element selected.normal {
+    background-color:             @selected-normal-background;
+    text-color:                   @selected-normal-foreground;
+}
+
+textbox {
+    background-color:             @background-alt;
+    text-color:                   @foreground-color;
+    placeholder-color:            @color8;
+}

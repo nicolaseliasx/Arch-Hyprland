@@ -291,8 +291,8 @@ if ! check_services_running; then
   )
 fi
 
-# Add the remaining static options
-options_command+=(
+  "user_pkgs" "Install explicit pacman & AUR package lists?" "ON"
+  "monitors" "Configure Display Profile (Laptop / Single vs Desktop Dual)?" "ON"
   "gtk_themes" "Install GTK themes? (required for Dark/Light function)" "OFF"
   "bluetooth" "Do you want script to configure Bluetooth?" "OFF"
   "thunar" "Do you want Thunar file manager to be installed?" "OFF"
@@ -301,7 +301,7 @@ options_command+=(
   "zsh" "Install zsh shell with Oh-My-Zsh?" "OFF"
   "pokemon" "Add Pokemon color scripts to your terminal?" "OFF"
   "rog" "Are you installing on Asus ROG laptops?" "OFF"
-  "dots" "Download and install pre-configured KooL Hyprland dotfiles?" "OFF"
+  "dots" "Apply your personal snapshot dotfiles (Hyprland, Waybar, Rofi, etc.)?" "ON"
 )
 
 # Capture the selected options before the while loop starts
@@ -510,22 +510,21 @@ for option in "${options[@]}"; do
     echo "${INFO} Adding ${SKY_BLUE}Pokemon color scripts to terminal...${RESET}" | tee -a "$LOG"
     execute_script "zsh_pokemon.sh"
     ;;
+  user_pkgs)
+    echo "${INFO} Installing explicit ${SKY_BLUE}user packages...${RESET}" | tee -a "$LOG"
+    execute_script "01-pacman-pkgs.sh"
+    ;;
+  monitors)
+    echo "${INFO} Configuring ${SKY_BLUE}monitor profile...${RESET}" | tee -a "$LOG"
+    execute_script "monitors.sh"
+    ;;
   rog)
     echo "${INFO} Installing ${SKY_BLUE}ROG laptop packages...${RESET}" | tee -a "$LOG"
     execute_script "rog.sh"
     ;;
   dots)
-    if [ "$wallust_setup_failed" -ne 0 ]; then
-      dotfiles_paused_for_wallust=1
-      deferred_non_fatal_failures+=("dotfiles installation paused because wallust setup failed")
-      echo "${WARN} Dotfiles installation paused because wallust compatibility setup failed." | tee -a "$LOG"
-      if command -v whiptail >/dev/null 2>&1; then
-        whiptail --title "Dotfiles Paused" --msgbox "wallust compatibility setup failed earlier.\n\nDotfiles installation has been paused to avoid an incomplete theming setup.\n\nFix wallust first, then rerun with only the dots option or run install-scripts/dotfiles-main.sh manually." 14 90
-      fi
-      continue
-    fi
-    echo "${INFO} Installing pre-configured ${SKY_BLUE}KooL Hyprland dotfiles...${RESET}" | tee -a "$LOG"
-    execute_script "dotfiles-main.sh" || {
+    echo "${INFO} Applying personal snapshot ${SKY_BLUE}dotfiles...${RESET}" | tee -a "$LOG"
+    execute_script "dotfiles-apply.sh" || {
       echo "${ERROR:-[ERROR]} Dotfiles installation failed" | tee -a "$LOG"
       exit 1
     }

@@ -1,0 +1,7 @@
+hl.config({ animations = { enabled = true } })
+hl.curve("quart", { type = "bezier", points = { {0.25, 1}, {0.5, 1} } })
+hl.animation({ leaf = "windows", enabled = 1, speed = 6, bezier = "quart", style = "slide" })
+hl.animation({ leaf = "border", enabled = 1, speed = 6, bezier = "quart" })
+hl.animation({ leaf = "borderangle", enabled = 1, speed = 6, bezier = "quart" })
+hl.animation({ leaf = "fade", enabled = 1, speed = 6, bezier = "quart" })
+hl.animation({ leaf = "workspaces", enabled = 1, speed = 6, bezier = "quart" })

@@ -1,0 +1,25 @@
+//* ---- 💫 https://github.com/JaKooLit 💫 ---- *//
+/* Waybar Modules Extras */
+
+/* This is where you can add Extra Modules you wish. copy.sh will try to restore*/
+/* this file along with the unique configs and styles. */
+/* IMPORTANT, be mindful with , or ". else waybar will not start */
+
+{
+
+"custom/vpn": {
+	"return-type": "json",
+	"exec": "$HOME/.local/bin/bridge-vpn status",
+	"interval": 2,
+	"on-click": "$HOME/.local/bin/bridge-vpn toggle",
+	"tooltip": true
+},
+
+"custom/tools": {
+	"format": "󰋲",
+	"tooltip": true,
+	"tooltip-format": "Ferramentas",
+	"interval": "once"
+},
+
+}

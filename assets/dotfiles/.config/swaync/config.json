@@ -1,0 +1,101 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "center",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "cssPriority": "user",
+  "control-center-margin-top": 5,
+  "control-center-margin-bottom": 0,
+  "control-center-margin-right": 0,
+  "control-center-margin-left": 0,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-icon-size": 28,
+  "notification-body-image-height": 120,
+  "notification-body-image-width": 120,
+  "notification-window-preferred-output": "DP-3",
+  "notification-window-width": 480,
+  "timeout": 6,
+  "timeout-low": 3,
+  "timeout-critical": 0,
+  "fit-to-screen": false,
+  "control-center-width": 500,
+  "control-center-height": 760,
+  "keyboard-shortcuts": true,
+  "image-visibility": "when-available",
+  "transition-time": 200,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "script-fail-notify": true,
+  "widgets": [
+      "dnd",
+      "switch#vpn",
+      "buttons-grid",
+      "mpris",
+      "volume", 
+      "backlight",
+      "title",
+      "notifications"
+  ],
+  "widget-config": {
+      "title": {
+          "text": "Notifications",
+          "clear-all-button": true,
+          "button-text": "Clear"
+      },
+      "dnd": {
+          "text": "Do Not Disturb"
+      },
+      "switch#vpn": {
+          "text": "VPN",
+          "label-command": "/home/ncls/.local/bin/bridge-vpn label",
+          "label-click-command": "/home/ncls/.local/bin/bridge-vpn select",
+          "command": "/home/ncls/.local/bin/bridge-vpn set",
+          "update-command": "/home/ncls/.local/bin/bridge-vpn active"
+      },
+      "label": {
+          "max-lines": 1,
+          "text": "Notification"
+      },
+      "mpris": {
+          "image-size": 10,
+          "image-radius": 0
+      },
+      "volume": {
+          "label": "󰕾"
+      },
+      "backlight": {
+          "label": "󰃟"
+      },
+      "buttons-grid": {
+          "actions": [
+              {
+                  "label": "󰐥",
+                  "command": "swaync-client -cp && bash -c $HOME/.config/hypr/scripts/Wlogout.sh"
+              },
+              {
+                  "label": "󰌾",
+                  "command": "swaync-client -cp && bash -c $HOME/.config/hypr/scripts/LockScreen.sh"
+              },
+              {
+                  "label": "HLP",
+                  "command": "swaync-client -cp && /home/ncls/.config/hypr/scripts/KeyHints.sh"
+              },
+              {
+                  "label": "󰏗",
+                  "command": "swaync-client -cp && kitty --class=system-update --title=Atualização sh -c 'yay -Syu; sleep 2'"
+              },
+              {
+                  "label": "󰝟",
+                  "command": "swaync-client -cp && pactl set-sink-mute @DEFAULT_SINK@ toggle"
+              },
+              {
+                  "label": "󰂯",
+                  "command": "swaync-client -cp && blueman-manager"
+              }
+          ]
+      }
+  }
+}

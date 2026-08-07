@@ -1,0 +1,300 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Dark - Obsidian Edge */
+
+@import "wallust/colors-waybar.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-weight: bold;
+  min-height: 0;
+  /* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
+  font-size: 97%;
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+}
+
+window#waybar {
+  background: black;
+  border-radius: 12px;
+}
+
+window#waybar.hidden {
+  opacity: 0.5;
+}
+
+tooltip {
+  color: @foreground;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+}
+
+tooltip label {
+  color: @foreground;
+  padding-right: 2px;
+  padding-left: 2px;
+}
+
+/*-----module groups----*/
+.modules-left,
+.modules-center,
+.modules-right {
+  border: 0px solid #b4befe;
+  border-radius: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+#custom-arch {
+  margin-left: 10px;
+}
+
+.modules-right > widget:last-child > * {
+  margin-right: 10px;
+}
+
+#taskbar button,
+#workspaces button {
+  color: @color12;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 4px;
+  border-radius: 9px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+#taskbar button.active,
+#workspaces button.active {
+  color: @foreground;
+  border-radius: 15px 15px 15px 15px;
+  padding-left: 8px;
+  padding-right: 8px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+#workspaces button.focused {
+  color: #d8dee9;
+}
+
+#workspaces button.urgent {
+  color: #11111b;
+  border-radius: 10px;
+}
+
+#taskbar button:hover,
+#workspaces button:hover {
+  color: @color9;
+  border-radius: 15px;
+  padding-left: 2px;
+  padding-right: 2px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+#workspaces button {
+  color: #4b5563;
+  font-weight: 900;
+}
+
+#workspaces button label {
+  font-weight: 900;
+}
+
+#workspaces button:hover {
+  color: #d1d5db;
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+  color: #ffffff;
+}
+
+#backlight,
+#backlight-slider,
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#memory,
+#mode,
+#mpris,
+#network,
+#power-profiles-daemon,
+#pulseaudio,
+#pulseaudio-slider,
+#taskbar,
+#temperature,
+#tray,
+#window,
+#wireplumber,
+#workspaces,
+#custom-backlight,
+#custom-animation_theme,
+#custom-browser,
+#custom-cava_mviz,
+#custom-cycle_wall,
+#custom-dot_update,
+#custom-file_manager,
+#custom-keybinds,
+#custom-keyboard,
+#custom-light_dark,
+#custom-lock,
+#custom-hint,
+#custom-hypridle,
+#custom-menu,
+#custom-playerctl,
+#custom-power_vertical,
+#custom-power,
+#custom-quit,
+#custom-reboot,
+#custom-settings,
+#custom-spotify,
+#custom-swaync,
+#custom-tty,
+#custom-updater,
+#custom-vpn,
+#custom-hyprpicker,
+#custom-weather,
+#custom-tools,
+#custom-weather.clearNight,
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight,
+#custom-weather.default,
+#custom-weather.rainyDay,
+#custom-weather.rainyNight,
+#custom-weather.severe,
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight,
+#custom-weather.sunnyDay {
+  color: @foreground;
+  border-radius: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 6px;
+  padding-left: 6px;
+}
+
+#temperature.critical {
+  background-color: #ff0000;
+}
+
+@keyframes blink {
+  to {
+    color: #000000;
+  }
+}
+
+/*-----Indicators----*/
+#custom-hypridle.notactive,
+#idle_inhibitor.activated {
+  color: #39ff14;
+}
+
+#custom-vpn.connected {
+  color: #39ff14;
+}
+
+#custom-vpn.disconnected {
+  color: #f53c3c;
+}
+
+#battery.critical:not(.charging) {
+  color: #f53c3c;
+  animation-name: blink;
+  animation-duration: 3s;
+  animation-timing-function: steps(12);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#backlight-slider slider,
+#pulseaudio-slider slider {
+  min-width: 0px;
+  min-height: 0px;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+
+#backlight-slider trough,
+#pulseaudio-slider trough {
+  min-width: 80px;
+  min-height: 5px;
+  border-radius: 5px;
+}
+
+#backlight-slider highlight,
+#pulseaudio-slider highlight {
+  min-height: 10px;
+  border-radius: 5px;
+}
+
+/* --- EFEITO DE ACENDER (HOVER) --- */
+
+/* 1. Define que todos os módulos ficam meio transparentes (cinzas) */
+.modules-left > widget > *,
+.modules-center > widget > *,
+.modules-right > widget > * {
+  opacity: 0.5; /* Quão apagado fica (0.4 é 40% visível) */
+  transition: opacity 0.3s; /* Suavidade da animação */
+}
+
+/* 2. Quando passar o mouse em CIMA DO MÓDULO, ele acende 100% */
+.modules-left > widget > *:hover,
+.modules-center > widget > *:hover,
+.modules-right > widget > *:hover {
+  opacity: 1;
+}
+
+/* --- ESTILO DO GRUPO HARDWARE (RAM/CPU) --- */
+
+/* Ajuste para o grupo não bugar a opacidade */
+#group-hardware {
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+#group-hardware:hover {
+  opacity: 1;
+}
+
+/* Estilo dos itens que saem de dentro da gaveta (CPU, Temp, Disk) */
+.hardware-drawer {
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro atrás deles */
+  border-radius: 10px;
+  margin-left: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* --- ESTILO DO GRUPO HINT DRAWER (HLP) --- */
+
+#group-hint_drawer {
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+#group-hint_drawer:hover {
+  opacity: 1;
+}
+
+/* Estilo dos itens que expandem (animation_theme, vpn) */
+.hint-drawer {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#custom-updater, #custom-vpn {
+  font-size: 115%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}

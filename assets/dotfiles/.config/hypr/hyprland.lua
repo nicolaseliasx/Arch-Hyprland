@@ -1,0 +1,11 @@
+-- Hyprland 0.55+ entry point.  The .conf tree remains as a login fallback.
+require("config.environment")
+require("config.settings")
+require("config.devices")
+require("config.animations")
+require("config.rules")
+require("config.bindings")
+require("monitors")
+require("workspaces")
+require("config.workspace_overrides")
+require("config.autostart")
