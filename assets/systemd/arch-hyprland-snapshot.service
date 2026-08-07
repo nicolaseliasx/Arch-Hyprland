@@ -1,0 +1,13 @@
+[Unit]
+Description=Monthly Arch-Hyprland System Snapshot & Git Backup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment="DISPLAY=:0"
+Environment="WAYLAND_DISPLAY=wayland-1"
+ExecStart=/home/ncls/utils/arch-hyprland/scripts/auto-snapshot-monthly.sh
+
+[Install]
+WantedBy=default.target

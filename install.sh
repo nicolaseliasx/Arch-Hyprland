@@ -293,6 +293,7 @@ fi
 
   "user_pkgs" "Install explicit pacman & AUR package lists?" "ON"
   "monitors" "Configure Display Profile (Laptop / Single vs Desktop Dual)?" "ON"
+  "auto_snapshot" "Enable monthly auto-snapshot systemd timer?" "OFF"
   "gtk_themes" "Install GTK themes? (required for Dark/Light function)" "OFF"
   "bluetooth" "Do you want script to configure Bluetooth?" "OFF"
   "thunar" "Do you want Thunar file manager to be installed?" "OFF"
@@ -517,6 +518,10 @@ for option in "${options[@]}"; do
   monitors)
     echo "${INFO} Configuring ${SKY_BLUE}monitor profile...${RESET}" | tee -a "$LOG"
     execute_script "monitors.sh"
+    ;;
+  auto_snapshot)
+    echo "${INFO} Setting up ${SKY_BLUE}monthly automated snapshot timer...${RESET}" | tee -a "$LOG"
+    execute_script "setup-monthly-timer.sh"
     ;;
   rog)
     echo "${INFO} Installing ${SKY_BLUE}ROG laptop packages...${RESET}" | tee -a "$LOG"

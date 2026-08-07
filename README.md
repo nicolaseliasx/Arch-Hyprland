@@ -18,7 +18,7 @@ cd arch-hyprland
 
 ## 🛠️ Management & Maintenance Scripts
 
-- **Update Snapshot** (Extract latest dotfiles & explicit packages from your system into repo):
+- **Manual Snapshot** (Extract latest dotfiles & explicit packages from your system into repo):
   ```bash
   ./scripts/snapshot.sh
   ```
@@ -26,6 +26,20 @@ cd arch-hyprland
   ```bash
   ./scripts/apply.sh
   ```
+- **Monthly Auto-Snapshot & Push**:
+  - Automatically runs on the 1st of every month at 00:00 (via systemd user timer).
+  - Triggers a GUI error popup (**"Erro ao tirar snapshot do sistema"**) via `yad` / `rofi` if any error occurs.
+  - Setup / Manage Timer:
+    ```bash
+    # Enable monthly timer:
+    ./install-scripts/setup-monthly-timer.sh
+
+    # Test auto-snapshot now:
+    ./install-scripts/setup-monthly-timer.sh --run-now
+
+    # Disable timer:
+    ./install-scripts/setup-monthly-timer.sh --disable
+    ```
 
 ---
 
