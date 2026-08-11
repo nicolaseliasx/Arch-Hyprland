@@ -7,6 +7,9 @@ Install-Logs/
 *~
 .snapshot-stage.*
 
+# Runtime credential managed by Codex Mobile; never snapshot or commit it.
+assets/dotfiles/.config/codex-mobile/
+
 # Python cache
 __pycache__/
 *.pyc
