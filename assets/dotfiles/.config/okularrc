@@ -1,0 +1,14 @@
+[Desktop Entry]
+FullScreen=false
+
+[General]
+LockSidebar=true
+ShowSidebar=true
+
+[Recent Files]
+File1[$e]=$HOME/projects/xiter/README.md
+File2[$e]=$HOME/projects/crrclm/README.md
+File3[$e]=$HOME/projects/job-hunter/docs/tasks/README.md
+Name1[$e]=README.md
+Name2[$e]=README.md
+Name3[$e]=README.md

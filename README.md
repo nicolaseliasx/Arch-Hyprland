@@ -1,51 +1,64 @@
-# Arch Hyprland Personal Bootstrap & Snapshot
+# Arch Hyprland PC-base profile
 
-This repository contains a clean, automated, and reproducible snapshot & installation system for **Arch Linux + Hyprland**.
+This repository is the versioned, portable profile of one Arch Linux +
+Hyprland PC base. A client machine installs the same packages, dotfiles, themes
+and fonts stored here; it does **not** create snapshots or write to GitHub.
 
-Designed for seamless deployment across multiple machines (e.g. Laptop and Desktop PC).
+## Install on a clean Arch machine
 
----
-
-## 🚀 Quick Start (Fresh Install)
+Start with Arch Linux, a normal user with `sudo`, networking, and this
+repository cloned on `main`. Then run:
 
 ```bash
-git clone https://github.com/nicolaseliasx/arch-hyprland.git
-cd arch-hyprland
 ./install.sh
 ```
 
----
+The script asks for `INSTALL` before it starts. It installs the package
+manifests with `yay`, then mirrors every path in
+[`assets/snapshot-paths.txt`](assets/snapshot-paths.txt). Existing files in
+those paths are overwritten, and a dated manual backup is stored under
+`~/.local/state/arch-hyprland/backups/`. It does not partition disks, create
+users, copy SSH keys, enable a snapshot timer, or upload anything.
 
-## 🛠️ Management & Maintenance Scripts
+Some old Arch/AUR packages may disappear. Those failures are written to the
+installation log and do not stop the remaining profile from being applied.
 
-- **Manual Snapshot** (Extract latest dotfiles & explicit packages from your system into repo):
-  ```bash
-  ./scripts/snapshot.sh
-  ```
-- **Apply Snapshot** (Restore dotfiles & install missing packages without full reinstall):
-  ```bash
-  ./scripts/apply.sh
-  ```
-- **Monthly Auto-Snapshot & Push**:
-  - Automatically runs on the 1st of every month at 00:00 (via systemd user timer).
-  - Triggers a GUI error popup (**"Erro ao tirar snapshot do sistema"**) via `yad` / `rofi` if any error occurs.
-  - Setup / Manage Timer:
-    ```bash
-    # Enable monthly timer:
-    ./install-scripts/setup-monthly-timer.sh
+## PC base: create and publish the profile
 
-    # Test auto-snapshot now:
-    ./install-scripts/setup-monthly-timer.sh --run-now
+Only run these commands on the PC base. Its checkout must be clean, on `main`,
+and use an SSH `origin` that can push to GitHub.
 
-    # Disable timer:
-    ./install-scripts/setup-monthly-timer.sh --disable
-    ```
+```bash
+./scripts/snapshot.sh
+./install-scripts/setup-monthly-timer.sh --enable-remote
+```
 
----
+`--enable-remote` checks read and dry-run push access before it writes any
+systemd unit. The user timer then runs on the first day of each month, captures
+the profile, commits only generated snapshot artifacts, and pushes to `main`.
+It aborts safely if the checkout is dirty or behind the remote.
 
-## 🖥️ Display & Hardware Features
+Useful commands:
 
-- **Multi-Monitor / Display Toggle**: Select between Laptop / Single Monitor (`monitor = , preferred, auto, 1`) and Desktop Dual Monitor (DP-3 + DP-2 setup) during installation or via `install-scripts/monitors.sh`.
-- **NVIDIA GPU Support**: Automatic detection and installation of `nvidia-dkms` & hyprland environment configuration.
-- **Embedded Dotfiles**: Self-contained snapshot located in `assets/dotfiles/` (Hyprland, Waybar, Rofi, Quickshell, Kitty, Ghostty, Swaync, Wallust, Zsh, Wallpapers, etc.).
-- **Package Lists**: Explicit native and AUR package lists maintained in `assets/packages/`.
+```bash
+./install-scripts/setup-monthly-timer.sh --status
+./install-scripts/setup-monthly-timer.sh --run-now
+./install-scripts/setup-monthly-timer.sh --disable
+```
+
+## What is and is not copied
+
+The snapshot mirrors all of `~/.config`, selected shell/profile files, and
+wallpapers. It filters caches, browser profiles, local databases, session
+state, `.env` files, private-key files, known credential directories (including
+GitHub CLI and Codex Mobile), account files and paths named like tokens, secrets or passwords. Large
+application state such as JetBrains analyzer workspaces, VS Code history and
+workspace storage/extension caches, Hyprland generated wallpaper effects,
+Slack/Discord sessions, VS Code runtime data and browser profiles is also
+excluded. The remote snapshot systemd units are excluded as well. This keeps
+the visual and development configuration portable while requiring each machine
+to sign in to personal services separately.
+
+`~/.config/hypr/monitors.conf` is normalized to an automatic monitor profile,
+so a desktop connector name does not prevent Hyprland from starting on a
+notebook.

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "omniroute": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OmniRoute",
+      "options": { "apiKey": "{env:OMNIROUTE_API_KEY}" },
+      "models": {
+        "auto/coding": { "name": "OmniRoute Auto Coding" },
+        "auto/reasoning": { "name": "OmniRoute Auto Reasoning" }
+      }
+    }
+  },
+  "model": "omniroute/auto/coding",
+  "agent": {
+    "build": { "model": "omniroute/auto/coding" },
+    "plan": { "model": "omniroute/auto/reasoning" }
+  }
+}

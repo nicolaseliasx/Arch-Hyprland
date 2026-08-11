@@ -1,0 +1,22 @@
+[Unit]
+Description=Jobhunter private Telegram long-polling service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+UMask=0077
+WorkingDirectory=%h/projects/job-hunter
+Environment=JOBHUNTER_CONFIG=%h/.config/jobhunter/config.yaml
+Environment=PATH=%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+EnvironmentFile=-%h/.config/jobhunter/telegram.env
+ExecStartPre=%h/.local/bin/poetry run jobhunter database upgrade
+ExecStart=%h/.local/bin/poetry run jobhunter telegram
+Restart=on-failure
+RestartPreventExitStatus=78
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

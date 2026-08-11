@@ -1,0 +1,12 @@
+schema_version: "1"
+projects:
+  - id: example-project
+    role: Developer
+    description: Internal workflow tool.
+    links:
+      - https://example.invalid/project
+    technologies:
+      - name: Python
+        key: python
+    results:
+      - Used by the example team.

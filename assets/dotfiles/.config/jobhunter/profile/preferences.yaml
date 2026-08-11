@@ -1,0 +1,29 @@
+schema_version: "1"
+contracts:
+  - employee
+  - contractor
+remote:
+  accepts_remote: true
+  countries:
+    - BR
+  timezones:
+    - America/Sao_Paulo
+workload:
+  minimum_hours_per_week: 30
+  maximum_hours_per_week: 40
+availability:
+  notice_period_days: 0
+salary:
+  minimum: 5000
+  currency: BRL
+  period: month
+contractor_salary: null
+restrictions:
+  accepts_onsite: false
+  accepts_hybrid: false
+  accepts_exclusivity: null
+  accepts_on_call: null
+  accepts_meetings: true
+blocked_sectors: []
+blocked_companies: []
+allows_second_contract: null

@@ -5,9 +5,5 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-Environment="DISPLAY=:0"
-Environment="WAYLAND_DISPLAY=wayland-1"
-ExecStart=/home/ncls/utils/arch-hyprland/scripts/auto-snapshot-monthly.sh
-
-[Install]
-WantedBy=default.target
+# Replaced with the absolute checkout path by setup-monthly-timer.sh.
+ExecStart=/usr/bin/false

@@ -1,0 +1,82 @@
+schema_version: "1"
+answers:
+  - id: work-authorization-brazil
+    question: Você tem autorização legal para trabalhar no Brasil?
+    language: pt
+    aliases:
+      - question: Are you legally authorized to work in Brazil?
+        language: en
+    value: true
+    scope: global
+    category: legal
+    reuse:
+      auto_fill: false
+      requires_review: true
+  - id: visa-sponsorship
+    question: Você precisa de patrocínio de visto para trabalhar?
+    language: pt
+    aliases:
+      - question: Will you require visa sponsorship?
+        language: en
+    value: false
+    scope: global
+    category: legal
+    reuse:
+      auto_fill: false
+      requires_review: true
+  - id: remote-work
+    question: Você aceita trabalho remoto?
+    language: pt
+    aliases:
+      - question: Are you willing to work remotely?
+        language: en
+    value: true
+    scope: global
+    category: common
+    reuse:
+      auto_fill: true
+  - id: cnpj-active
+    question: Você possui CNPJ ativo?
+    language: pt
+    value: false
+    scope: global
+    category: common
+    reuse:
+      auto_fill: true
+  - id: willing-open-cnpj
+    question: Você está disposto a abrir um CNPJ?
+    language: pt
+    value: true
+    scope: global
+    category: common
+    reuse:
+      auto_fill: true
+  - id: immediate-start
+    question: Qual é a sua disponibilidade para início?
+    language: pt
+    aliases:
+      - question: When can you start?
+        language: en
+    value:
+      id: immediate
+      label: Imediatamente
+    scope: global
+    category: common
+    reuse:
+      auto_fill: true
+  - id: linkedin-profile
+    question: LinkedIn Profile
+    language: en
+    value: https://www.linkedin.com/in/nicolaseliasx
+    scope: global
+    category: common
+    reuse:
+      auto_fill: true
+  - id: ai-development-stack
+    question: What AI stack do you currently work to ship products? What is the most impactful AI tool you have recently adopted?
+    language: en
+    value: Uso Codex e Claude Code em fluxos de contexto, planejamento, revisão, segurança e qualidade; o Codex é a ferramenta de maior impacto recente.
+    scope: global
+    category: common
+    reuse:
+      auto_fill: true

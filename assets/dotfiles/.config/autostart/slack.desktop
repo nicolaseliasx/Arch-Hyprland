@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Slack
+Exec=/home/ncls/.config/hypr/scripts/slack-work-hours.sh
+X-GNOME-Autostart-enabled=true

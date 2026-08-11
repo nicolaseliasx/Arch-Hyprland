@@ -1,0 +1,6 @@
+[Unit]
+Description=Show the weekly system-update reminder
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/weekly-update-reminder

@@ -128,7 +128,7 @@ hl.config({
 
 hl.config({
   decoration = {
-      screen_shader = "$HOME/.config/hypr/shaders/digital-vibrance-90.frag",
+      screen_shader = "/home/ncls/.config/hypr/shaders/digital-vibrance-90.frag",
       rounding = 8,
       active_opacity = 1.0,
       inactive_opacity = 0.9,
@@ -176,7 +176,7 @@ hl.config({
 
 hl.config({
   input = {
-      kb_layout = "br",
-      kb_variant = "abnt2",
+      kb_layout = "us",
+      kb_variant = "intl",
   },
 })

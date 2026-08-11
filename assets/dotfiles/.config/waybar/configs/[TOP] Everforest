@@ -24,7 +24,7 @@
 //"margin-right": 8,
 
 "modules-left": [
-  "custom/arch",
+	"custom/arch",
 	"custom/separator#blank_2", 
 	"hyprland/workspaces",
 	"custom/separator#blank_3",

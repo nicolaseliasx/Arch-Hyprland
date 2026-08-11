@@ -1,0 +1,9 @@
+[Unit]
+Description=Weekly system-update reminder
+
+[Timer]
+OnCalendar=Mon *-*-* 13:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

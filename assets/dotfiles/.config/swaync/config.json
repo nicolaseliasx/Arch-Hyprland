@@ -50,10 +50,10 @@
       },
       "switch#vpn": {
           "text": "VPN",
-          "label-command": "$HOME/.local/bin/bridge-vpn label",
-          "label-click-command": "$HOME/.local/bin/bridge-vpn select",
-          "command": "$HOME/.local/bin/bridge-vpn set",
-          "update-command": "$HOME/.local/bin/bridge-vpn active"
+          "label-command": "/home/ncls/.local/bin/bridge-vpn label",
+          "label-click-command": "/home/ncls/.local/bin/bridge-vpn select",
+          "command": "/home/ncls/.local/bin/bridge-vpn set",
+          "update-command": "/home/ncls/.local/bin/bridge-vpn active"
       },
       "label": {
           "max-lines": 1,
@@ -81,7 +81,7 @@
               },
               {
                   "label": "HLP",
-                  "command": "swaync-client -cp && $HOME/.config/hypr/scripts/KeyHints.sh"
+                  "command": "swaync-client -cp && /home/ncls/.config/hypr/scripts/KeyHints.sh"
               },
               {
                   "label": "󰏗",

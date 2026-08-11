@@ -1,0 +1,20 @@
+[Unit]
+Description=Jobhunter local dashboard and API
+After=network.target
+
+[Service]
+Type=simple
+UMask=0077
+WorkingDirectory=%h/projects/job-hunter
+Environment=JOBHUNTER_CONFIG=%h/.config/jobhunter/config.yaml
+Environment=PATH=%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+EnvironmentFile=-%h/.config/jobhunter/jobhunter.env
+ExecStartPre=%h/.local/bin/poetry run jobhunter database upgrade
+ExecStart=%h/.local/bin/poetry run jobhunter serve --host 0.0.0.0 --port 8765
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

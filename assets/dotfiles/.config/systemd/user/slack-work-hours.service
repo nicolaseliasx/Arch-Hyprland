@@ -1,0 +1,9 @@
+[Unit]
+Description=Abrir Slack no Horario de Trabalho
+
+[Service]
+Type=oneshot
+Environment="DISPLAY=:0"
+Environment="XDG_CURRENT_DESKTOP=Hyprland"
+Environment="WAYLAND_DISPLAY=wayland-1"
+ExecStart=/home/ncls/.config/hypr/scripts/slack-work-hours.sh

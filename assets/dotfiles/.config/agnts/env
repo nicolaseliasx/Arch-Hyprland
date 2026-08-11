@@ -1,0 +1,9 @@
+PORT=3000
+PROJECT_ROOT=/home/ncls
+CODEX_BIN=/home/ncls/.nvm/versions/node/v22.21.1/bin/codex
+TAILSCALE_ALLOWED_LOGIN=k7438076@gmail.com
+APP_ORIGIN=https://archlinux.tail8af835.ts.net
+APP_URL=https://archlinux.tail8af835.ts.net
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+DEV_AUTH_BYPASS=0

@@ -2,8 +2,9 @@
 Description=Monthly Arch-Hyprland System Snapshot Timer
 
 [Timer]
-OnCalendar=monthly
+OnCalendar=*-*-01 00:00:00
 Persistent=true
+RandomizedDelaySec=15m
 
 [Install]
 WantedBy=timers.target

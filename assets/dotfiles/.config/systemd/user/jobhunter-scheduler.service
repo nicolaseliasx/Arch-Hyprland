@@ -1,0 +1,17 @@
+[Unit]
+Description=Jobhunter bounded discovery run
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+UMask=0077
+WorkingDirectory=%h/projects/job-hunter
+Environment=JOBHUNTER_CONFIG=%h/.config/jobhunter/config.yaml
+Environment=PATH=%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+EnvironmentFile=-%h/.config/jobhunter/jobhunter.env
+ExecCondition=%h/.local/bin/poetry run jobhunter schedule status --require-open
+ExecStartPre=%h/.local/bin/poetry run jobhunter database upgrade
+ExecStart=%h/.local/bin/poetry run jobhunter run --scheduled --source-limit 100
+StandardOutput=journal
+StandardError=journal

@@ -5,6 +5,7 @@ Install-Logs/
 *.swp
 *.bak
 *~
+.snapshot-stage.*
 
 # Python cache
 __pycache__/

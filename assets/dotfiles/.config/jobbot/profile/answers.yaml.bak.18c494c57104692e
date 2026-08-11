@@ -1,0 +1,144 @@
+schema_version: '1'
+answers:
+- id: work-authorization-brazil
+  question: Você tem autorização legal para trabalhar no Brasil?
+  language: pt
+  aliases:
+  - question: Are you legally authorized to work in Brazil?
+    language: en
+  value: true
+  scope: global
+  company_id: null
+  job_id: null
+  category: legal
+  reuse:
+    auto_fill: false
+    requires_review: true
+  expires_on: null
+- id: visa-sponsorship
+  question: Você precisa de patrocínio de visto para trabalhar?
+  language: pt
+  aliases:
+  - question: Will you require visa sponsorship?
+    language: en
+  value: false
+  scope: global
+  company_id: null
+  job_id: null
+  category: legal
+  reuse:
+    auto_fill: false
+    requires_review: true
+  expires_on: null
+- id: remote-work
+  question: Você aceita trabalho remoto?
+  language: pt
+  aliases:
+  - question: Are you willing to work remotely?
+    language: en
+  value: true
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: cnpj-active
+  question: Você possui CNPJ ativo?
+  language: pt
+  aliases: []
+  value: false
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: willing-open-cnpj
+  question: Você está disposto a abrir um CNPJ?
+  language: pt
+  aliases: []
+  value: true
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: immediate-start
+  question: Qual é a sua disponibilidade para início?
+  language: pt
+  aliases:
+  - question: When can you start?
+    language: en
+  value:
+    id: immediate
+    label: Imediatamente
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: linkedin-profile
+  question: LinkedIn Profile
+  language: en
+  aliases: []
+  value: https://www.linkedin.com/in/nicolaseliasx
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: ai-development-stack
+  question: What AI stack do you currently work to ship products? What is the most
+    impactful AI tool you have recently adopted?
+  language: en
+  aliases: []
+  value: Uso Codex e Claude Code em fluxos de contexto, planejamento, revisão, segurança
+    e qualidade; o Codex é a ferramenta de maior impacto recente.
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: answer-78b0ae6f62204e2c9facfb04c56ac215
+  question: Country *
+  language: en
+  aliases: []
+  value: Brazil
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null
+- id: answer-01a0ab25d5e74fcabe66b9f5c20d5dd9
+  question: Phone *
+  language: en
+  aliases: []
+  value: +55 48 99108-3583
+  scope: global
+  company_id: null
+  job_id: null
+  category: common
+  reuse:
+    auto_fill: true
+    requires_review: false
+  expires_on: null

@@ -1,0 +1,138 @@
+schema_version: "1"
+identity:
+  full_name: Nicolas Elias Sant’Ana
+summary: >-
+  Software engineer experienced in backend and full-stack development, APIs,
+  relational and NoSQL databases, distributed systems, and AI-assisted software
+  development with Codex and Claude Code. Python knowledge developed at UFSC
+  through coursework, academic projects, database benchmarking, concurrent
+  programming, and teaching introductory workshops.
+contact:
+  email: nicolaselias@pm.me
+  phone: "+55 48 99108-3583"
+  linkedin: https://www.linkedin.com/in/nicolaseliasx
+location:
+  country: BR
+  region: SC
+  city: Grande Florianópolis
+languages:
+  - language: pt
+    level: native
+  - language: en
+    level: intermediate
+    observation: CEFR B2; entrevista técnica em inglês exige revisão.
+skills:
+  - id: ai
+    name: AI
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: llm
+    name: LLM
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: api-development
+    name: API Development
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}, {source_id: movie-api-go}]
+  - id: distributed-systems
+    name: Distributed Systems
+    evidence: [{source_id: sigcaps}, {source_id: epos-realtime-scheduler}]
+  - id: codex
+    name: Codex
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: claude-code
+    name: Claude Code
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: java
+    name: Java
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}]
+  - id: kotlin
+    name: Kotlin
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: spring-boot
+    name: Spring Boot
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}]
+  - id: spring-framework
+    name: Spring Framework
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: jpa
+    name: JPA
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: hibernate
+    name: Hibernate
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: querydsl
+    name: Querydsl
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: graphql
+    name: GraphQL
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: rest
+    name: REST
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}, {source_id: movie-api-go}]
+  - id: websocket
+    name: WebSocket
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}]
+  - id: postgresql
+    name: PostgreSQL
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: oracle
+    name: Oracle
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: liquibase
+    name: Liquibase
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: react
+    name: React
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}]
+  - id: typescript
+    name: TypeScript
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}]
+  - id: javascript
+    name: JavaScript
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: mongodb
+    name: MongoDB
+    evidence: [{source_id: sigcaps}, {source_id: movie-api-go}]
+  - id: junit
+    name: JUnit
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: mockito
+    name: Mockito
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: mockk
+    name: MockK
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: jest
+    name: Jest
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: docker
+    name: Docker
+    evidence: [{source_id: bridge-software-engineer}, {source_id: sigcaps}, {source_id: movie-api-go}]
+  - id: linux
+    name: Linux
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: git
+    name: Git
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: sentry
+    name: Sentry
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: grafana
+    name: Grafana
+    evidence: [{source_id: bridge-software-engineer}]
+  - id: python
+    name: Python
+    evidence: [{source_id: pet-computacao}, {source_id: concorrencia-c}]
+  - id: sql
+    name: SQL
+    evidence: [{source_id: bridge-software-engineer}, {source_id: pet-computacao}]
+  - id: c
+    name: C
+    evidence: [{source_id: concorrencia-c}]
+  - id: cpp
+    name: C++
+    evidence: [{source_id: epos-realtime-scheduler}]
+  - id: go
+    name: Go
+    evidence: [{source_id: movie-api-go}]
+  - id: riscv
+    name: RISC-V
+    evidence: [{source_id: epos-realtime-scheduler}]

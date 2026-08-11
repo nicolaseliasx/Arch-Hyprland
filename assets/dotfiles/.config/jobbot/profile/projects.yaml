@@ -1,0 +1,66 @@
+schema_version: "1"
+projects:
+  - id: sigcaps
+    name: SIGCAPS
+    role: Creator and Lead Developer
+    description: Patient call management system for Brazilian primary healthcare, built as a Computer Science capstone and product proof of concept.
+    links:
+      - https://github.com/nicolaseliasx/sigcaps
+    technologies:
+      - {name: Java, key: java}
+      - {name: Spring Boot, key: spring-boot}
+      - {name: Spring Security, key: spring-security}
+      - {name: React, key: react}
+      - {name: TypeScript, key: typescript}
+      - {name: MongoDB, key: mongodb}
+      - {name: REST, key: rest}
+      - {name: WebSocket, key: websocket}
+      - {name: JWT, key: jwt}
+      - {name: HMAC-SHA256, key: hmac-sha256}
+    results:
+      - Implementou comunicação em tempo real, autenticação JWT/HMAC, bootstrap seguro, auditoria e leitura de voz.
+      - TCC concluído com nota 9,0.
+      - A prova de conceito foi posteriormente evoluída por outra equipe e integrada ao PEC 5.5.
+  - id: epos-realtime-scheduler
+    name: EPOS Real-Time Scheduler
+    conditional: true
+    role: Pair Developer
+    description: C++ and RISC-V extensions to the EPOS operating system for real-time scheduling and multicore support.
+    links:
+      - https://github.com/nicolaseliasx/INE5424-epos
+    technologies:
+      - {name: C++, key: cpp}
+      - {name: RISC-V, key: riscv}
+      - {name: RTOS, key: rtos}
+      - {name: Real-time systems, key: real-time}
+      - {name: Operating systems, key: operating-systems}
+      - {name: Concurrency, key: concurrency}
+      - {name: Multicore, key: multicore}
+    results:
+      - Implementou em dupla Least Laxity First, mitigação de inversão de prioridade, operações atômicas AMO e suporte multicore.
+  - id: concorrencia-c
+    name: Concurrent Programming — UFSC
+    role: Academic Developer
+    description: Concurrent Programming coursework at UFSC using C, Python, and OpenMP.
+    links:
+      - https://github.com/nicolaseliasx/INE5410
+    technologies:
+      - {name: C, key: c}
+      - {name: Python, key: python}
+      - {name: OpenMP, key: openmp}
+    results:
+      - Trabalhou com processos, threads, semáforos, mutexes, deadlocks e OpenMP.
+  - id: movie-api-go
+    name: Movie API in Go
+    role: Personal Project Developer
+    description: REST API for movie management, created to practice Go and service design.
+    links:
+      - https://github.com/nicolaseliasx/movie-apirest-golang
+    technologies:
+      - {name: Go, key: go}
+      - {name: Gin, key: gin}
+      - {name: MongoDB, key: mongodb}
+      - {name: Docker, key: docker}
+      - {name: REST, key: rest}
+    results:
+      - Implementou CRUD, validação, persistência MongoDB e execução com Docker Compose.

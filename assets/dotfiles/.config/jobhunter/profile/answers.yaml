@@ -1,0 +1,32 @@
+schema_version: "1"
+answers:
+  - id: work-authorization-global
+    question: Are you authorized to work in Brazil?
+    language: en
+    aliases:
+      - question: Are you legally authorized to work in Brazil?
+        language: en
+    value: true
+    scope: global
+    category: legal
+    reuse:
+      auto_fill: true
+      requires_review: true
+  - id: company-location
+    question: Are you willing to work from the company office?
+    language: en
+    value: false
+    scope: company
+    company_id: example-company
+    reuse:
+      auto_fill: true
+  - id: job-start-date
+    question: What is your availability for this role?
+    language: en
+    value:
+      id: immediate
+      label: Immediately
+    scope: job
+    job_id: example-job
+    reuse:
+      auto_fill: true

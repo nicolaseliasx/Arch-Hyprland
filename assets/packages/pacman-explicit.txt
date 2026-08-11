@@ -126,7 +126,6 @@ usbutils
 uv
 uwsm
 vala
-waybar
 wf-recorder
 wget
 wireplumber

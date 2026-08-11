@@ -1,0 +1,16 @@
+[Unit]
+Description=AGNTs private web client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/projects/agnts
+ExecStart=%h/.nvm/versions/node/v22.21.1/bin/node --experimental-transform-types %h/projects/agnts/server/index.ts
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateDevices=false
+
+[Install]
+WantedBy=default.target

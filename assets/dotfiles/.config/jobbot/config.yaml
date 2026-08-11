@@ -1,0 +1,87 @@
+# Non-secret local configuration. Set OPENAI_API_KEY only in your environment.
+timezone: America/Sao_Paulo
+profile_dir: ~/.config/jobbot/profile
+mode: auto
+auto_enabled: true
+auto_adapter_allowlist: [greenhouse@14]
+telegram_submit_adapter_allowlist: [greenhouse]
+# Auto is disabled by default. These conservative fixed caps apply when enabled.
+auto_daily_limit: 1
+auto_daily_ats_limit: 1
+auto_daily_company_limit: 1
+auto_cooldown_seconds: 1800
+auto_reservation_ttl_seconds: 900
+auto_failure_threshold: 1
+# Auto sends only allowlisted, fully eligible forms; exceptions go to Telegram.
+request_timeout_seconds: 30
+max_download_bytes: 10000000
+# Allow up to US$0.50/day for evaluation and resume tailoring.
+ai_daily_budget_micros: 500000
+evidence_retention_days: 30
+scheduled_career_sources:
+  # Small Greenhouse boards first so supported applications fit in each run.
+  - index_url: https://job-boards.greenhouse.io/rdsourcing
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/rdsourcing]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://job-boards.greenhouse.io/vettoai
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/vettoai]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://job-boards.greenhouse.io/hotmartcareersbr
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/hotmartcareersbr]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://job-boards.greenhouse.io/telnyx54
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/telnyx54]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://job-boards.greenhouse.io/blip-global
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/blip-global]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://confitec.gupy.io/
+    allowed_hosts: [confitec.gupy.io]
+    allowed_path_prefixes: [/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://deliverit.gupy.io/
+    allowed_hosts: [deliverit.gupy.io]
+    allowed_path_prefixes: [/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://softdesign.gupy.io/
+    allowed_hosts: [softdesign.gupy.io]
+    allowed_path_prefixes: [/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://jointecnologia.gupy.io/
+    allowed_hosts: [jointecnologia.gupy.io]
+    allowed_path_prefixes: [/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://verity.gupy.io/
+    allowed_hosts: [verity.gupy.io]
+    allowed_path_prefixes: [/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://gruposysmap.gupy.io/
+    allowed_hosts: [gruposysmap.gupy.io]
+    allowed_path_prefixes: [/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://apply.workable.com/imachines/
+    allowed_hosts: [apply.workable.com]
+    allowed_path_prefixes: [/imachines/]
+    robots_allowed: true
+    terms_allowed: true
+  - index_url: https://jobs.lever.co/jobgether
+    allowed_hosts: [jobs.lever.co]
+    allowed_path_prefixes: [/jobgether]
+    robots_allowed: true
+    terms_allowed: true

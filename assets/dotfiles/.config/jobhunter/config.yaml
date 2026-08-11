@@ -1,0 +1,78 @@
+# Non-secret local configuration. Set OPENAI_API_KEY only in your environment.
+timezone: America/Sao_Paulo
+profile_dir: /home/ncls/projects/job-hunter/profile
+mode: review
+auto_enabled: false
+auto_adapter_allowlist:
+  - greenhouse@14
+submission:
+  mode: manual
+  daily_limit: 5
+  minimum_manual_score: 70
+  minimum_auto_score: 85
+  adapter_allowlist:
+    - greenhouse@14
+    - lever@3
+  daily_ats_limit: 5
+  daily_company_limit: 1
+  cooldown_seconds: 1800
+auto_reservation_ttl_seconds: 900
+auto_failure_threshold: 1
+request_timeout_seconds: 30
+max_download_bytes: 10000000
+discovery_limit: 100
+preparation_limit: 20
+# Required before enabling OpenAI-backed scheduled evaluation.
+ai_daily_budget_micros: 1000000
+evidence_retention_days: 90
+
+scheduled_career_sources:
+  - index_url: https://confitec.gupy.io
+    allowed_hosts: [confitec.gupy.io]
+    allowed_path_prefixes: [/]
+  - index_url: https://deliverit.gupy.io
+    allowed_hosts: [deliverit.gupy.io]
+    allowed_path_prefixes: [/]
+  - index_url: https://gruposysmap.gupy.io
+    allowed_hosts: [gruposysmap.gupy.io]
+    allowed_path_prefixes: [/]
+  - index_url: https://jointecnologia.gupy.io
+    allowed_hosts: [jointecnologia.gupy.io]
+    allowed_path_prefixes: [/]
+  - index_url: https://softdesign.gupy.io
+    allowed_hosts: [softdesign.gupy.io]
+    allowed_path_prefixes: [/]
+  - index_url: https://verity.gupy.io
+    allowed_hosts: [verity.gupy.io]
+    allowed_path_prefixes: [/]
+  - index_url: https://job-boards.greenhouse.io/blip-global
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/blip-global]
+  - index_url: https://job-boards.greenhouse.io/nerdy
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/nerdy]
+  - index_url: https://job-boards.greenhouse.io/rdsourcing
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/rdsourcing]
+  - index_url: https://job-boards.greenhouse.io/teachablecareers
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/teachablecareers]
+  - index_url: https://job-boards.greenhouse.io/telnyx54
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/telnyx54]
+  - index_url: https://job-boards.greenhouse.io/vettoai
+    allowed_hosts: [job-boards.greenhouse.io]
+    allowed_path_prefixes: [/vettoai]
+
+dashboard:
+  lan_enabled: true
+  base_url: http://192.168.15.22:8765
+
+diagnostics:
+  retention_days: 90
+
+agent_resume_maker:
+  provider: agy
+  model: gemini-3.1-pro-high
+  project_path: /home/ncls/projects/agent-resume-maker
+  timeout_seconds: 900

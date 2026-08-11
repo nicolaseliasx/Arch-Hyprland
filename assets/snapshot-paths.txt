@@ -1,0 +1,10 @@
+# Paths relative to $HOME that form the portable, versioned profile.
+# Directories are mirrored exactly on restore; a missing source means the target
+# is removed so the installed profile matches the PC base.
+.config
+.zshrc
+.p10k.zsh
+.gitconfig
+.gtkrc-2.0
+.Xresources
+pictures/wallpapers

@@ -1,0 +1,9 @@
+schema_version: "1"
+education:
+  - id: example-degree
+    institution: Example University
+    course: Computer Science
+    level: bachelor
+    status: completed
+    start_date: 2018-02
+    end_date: 2022-12

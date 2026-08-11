@@ -1,0 +1,9 @@
+schema_version: "1"
+education:
+  - id: ufsc-ciencia-computacao
+    institution: Universidade Federal de Santa Catarina
+    course: Bachelor's Degree in Computer Science
+    level: bachelor
+    status: completed
+    start_date: "2020"
+    end_date: "2025"

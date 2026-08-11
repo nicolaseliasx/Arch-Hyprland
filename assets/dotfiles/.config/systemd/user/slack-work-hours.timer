@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer para abrir o Slack no horario de trabalho (Seg-Sex, 06:00 as 18:00)
+
+[Timer]
+OnCalendar=Mon..Fri 06:00:00
+OnCalendar=Mon..Fri 06..17:00/30
+Persistent=true
+
+[Install]
+WantedBy=timers.target

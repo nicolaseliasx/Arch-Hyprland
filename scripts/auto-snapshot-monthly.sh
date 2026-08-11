@@ -1,75 +1,51 @@
 #!/usr/bin/env bash
-# ==============================================================================
-#  auto-snapshot-monthly.sh - Monthly Automated Snapshot & Git Push
-#  Executes system snapshot, commits changes, and pushes to remote fork.
-#  Displays a GUI error dialog on any failure.
-# ==============================================================================
-set -euo pipefail
+# This script is intentionally usable only from the explicitly enabled remote
+# timer on the PC base. It never stages arbitrary working-tree changes.
+set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="${ARCH_HYPRLAND_REPO_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/arch-hyprland"
+LOG_FILE="$STATE_DIR/monthly-snapshot.log"
+MANAGED_ARTIFACTS=(assets/dotfiles assets/packages assets/snapshot-metadata.env)
 
-# Ensure DISPLAY & WAYLAND_DISPLAY environment variables exist for GUI dialogs
-export DISPLAY="${DISPLAY:-:0}"
-export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-1}"
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+mkdir -p "$STATE_DIR"
+log() { printf '%s [monthly-snapshot] %s\n' "$(date --iso-8601=seconds)" "$*" | tee -a "$LOG_FILE"; }
+notify() {
+  command -v notify-send >/dev/null 2>&1 || return 0
+  notify-send "$1" "$2" >/dev/null 2>&1 || true
+}
+fail() { log "ERROR: $*"; notify 'Snapshot do sistema falhou' "$*"; exit 1; }
+on_error() { fail "unexpected error at line $1 (exit $2); see $LOG_FILE"; }
+trap 'on_error "$LINENO" "$?"' ERR
 
-LOG_DIR="$REPO_ROOT/Install-Logs"
-mkdir -p "$LOG_DIR"
-ERROR_LOG="$LOG_DIR/monthly-snapshot-error.log"
-
-show_error_popup() {
-  local exit_code="$1"
-  local line_no="$2"
-  local err_msg="Ocorreu um erro ao tirar o snapshot do sistema (Linha $line_no, Código $exit_code).\n\nVerifique as conexões, chaves SSH do Git ou a permissão de arquivos.\nLog: $ERROR_LOG"
-
-  echo -e "[ERROR] Snapshot failed at line $line_no with exit code $exit_code" >&2
-
-  # 1. Try YAD (GUI Dialog)
-  if command -v yad &>/dev/null; then
-    yad --error \
-      --title="Erro ao tirar snapshot do sistema" \
-      --text="<b><span foreground='red'>❌ Erro ao tirar snapshot do sistema</span></b>\n\n$err_msg" \
-      --button="Fechar:0" \
-      --width=550 \
-      --height=220 \
-      --center \
-      --window-icon="error" 2>/dev/null || true
-  # 2. Fallback to Rofi
-  elif command -v rofi &>/dev/null; then
-    rofi -e "❌ Erro ao tirar snapshot do sistema!\n\nCheck log: $ERROR_LOG" 2>/dev/null || true
-  # 3. Fallback to notify-send
-  elif command -v notify-send &>/dev/null; then
-    notify-send -u critical "Erro ao tirar snapshot do sistema" "$err_msg" 2>/dev/null || true
-  fi
+require_clean_main() {
+  [[ "$(git -C "$REPO_ROOT" branch --show-current)" == main ]] || fail 'the remote timer only runs from branch main'
+  [[ -n "$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || true)" ]] || fail 'origin remote is not configured'
+  [[ -z "$(git -C "$REPO_ROOT" status --porcelain --untracked-files=all)" ]] || fail 'repository has local changes; resolve them before the scheduled snapshot'
+  git -C "$REPO_ROOT" ls-remote --exit-code origin refs/heads/main >/dev/null 2>&1 || fail 'cannot access origin/main through Git/SSH'
+  git -C "$REPO_ROOT" fetch --quiet origin main || fail 'could not fetch origin/main'
+  local_head="$(git -C "$REPO_ROOT" rev-parse HEAD)"
+  remote_head="$(git -C "$REPO_ROOT" rev-parse origin/main)"
+  [[ "$local_head" == "$remote_head" ]] || fail 'local main is not synchronized with origin/main; update it manually first'
 }
 
-trap 'show_error_popup $? $LINENO' ERR
+main() {
+  require_clean_main
+  log 'capturing PC-base profile'
+  "$SCRIPT_DIR/snapshot.sh" >>"$LOG_FILE" 2>&1
 
-echo "=== 🔄 Running Monthly Snapshot & Git Backup ===" | tee "$ERROR_LOG"
-
-# 1. Run main snapshot script
-echo "  [1/3] Extracting dotfiles & package lists..." | tee -a "$ERROR_LOG"
-"$SCRIPT_DIR/snapshot.sh" >> "$ERROR_LOG" 2>&1
-
-cd "$REPO_ROOT"
-
-# 2. Check for changes in git
-if [ -n "$(git status --porcelain)" ]; then
-  echo "  [2/3] Changes detected. Committing to git..." | tee -a "$ERROR_LOG"
-  git add -A >> "$ERROR_LOG" 2>&1
-  git commit -m "auto-snapshot: $(date +'%Y-%m-%d %H:%M')" >> "$ERROR_LOG" 2>&1
-
-  echo "  [3/3] Pushing changes to remote fork..." | tee -a "$ERROR_LOG"
-  git push origin main >> "$ERROR_LOG" 2>&1
-
-  if command -v notify-send &>/dev/null; then
-    notify-send -u normal "Snapshot do Sistema" "Snapshot mensal realizado e enviado com sucesso ao GitHub!" 2>/dev/null || true
+  git -C "$REPO_ROOT" add -- "${MANAGED_ARTIFACTS[@]}"
+  if git -C "$REPO_ROOT" diff --cached --quiet; then
+    log 'no profile changes detected'
+    notify 'Snapshot do sistema' 'Nenhuma alteração no perfil versionado.'
+    return 0
   fi
-  echo "=== ✅ Auto-snapshot complete and pushed! ===" | tee -a "$ERROR_LOG"
-else
-  echo "=== ℹ️ System snapshot up-to-date. No changes to commit. ===" | tee -a "$ERROR_LOG"
-  if command -v notify-send &>/dev/null; then
-    notify-send -u low "Snapshot do Sistema" "Sistema verificado: nenhuma alteração recente para enviar." 2>/dev/null || true
-  fi
-fi
+
+  git -C "$REPO_ROOT" commit -m "auto-snapshot: $(date +'%Y-%m-%d %H:%M')" >>"$LOG_FILE" 2>&1 || fail 'could not commit generated snapshot artifacts'
+  git -C "$REPO_ROOT" push origin HEAD:main >>"$LOG_FILE" 2>&1 || fail 'commit created locally but push to origin/main failed'
+  log 'snapshot committed and pushed to origin/main'
+  notify 'Snapshot do sistema' 'Perfil mensal enviado ao GitHub com sucesso.'
+}
+
+main "$@"

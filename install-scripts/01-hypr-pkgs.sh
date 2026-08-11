@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==================================================
-#  KoolDots (2026)
+#  nclsDots (2026)
 #  Project URL: https://github.com/LinuxBeginnings
 #  License: GNU GPLv3
 #  SPDX-License-Identifier: GPL-3.0-or-later
@@ -125,7 +125,7 @@ fi
 
 # conflicting packages removal
 overall_failed=0
-printf "\n%s - ${SKY_BLUE}Removing some packages${RESET} as it conflicts with KooL's Hyprland Dots \n" "${NOTE}"
+printf "\n%s - ${SKY_BLUE}Removing some packages${RESET} as it conflicts with ncls's Hyprland Dots \n" "${NOTE}"
 for PKG in "${uninstall[@]}"; do
   if [[ "$PKG" == "rofi" && "$skip_rofi_uninstall" == "true" ]]; then
     continue
@@ -143,7 +143,7 @@ fi
 printf "\n%.0s" {1..1}
 
 # Installation of main components
-printf "\n%s - Installing ${SKY_BLUE}KooL's Hyprland necessary packages${RESET} .... \n" "${NOTE}"
+printf "\n%s - Installing ${SKY_BLUE}ncls's Hyprland necessary packages${RESET} .... \n" "${NOTE}"
 
 for PKG1 in "${hypr_package[@]}" "${hypr_package_2[@]}" "${Extra[@]}"; do
   install_package "$PKG1" "$LOG"

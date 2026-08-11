@@ -1,0 +1,20 @@
+schema_version: "1"
+identity:
+  full_name: Example Candidate
+summary: Software engineer experienced in backend development and APIs.
+contact:
+  email: candidate@example.invalid
+location:
+  country: BR
+languages:
+  - language: pt
+    level: native
+  - language: en
+    level: advanced
+skills:
+  - id: python
+    name: Python
+    experience:
+      months: 24
+      as_of: 2026-01-01
+    evidence: []

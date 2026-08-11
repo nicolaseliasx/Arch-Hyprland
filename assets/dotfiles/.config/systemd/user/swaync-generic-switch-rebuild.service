@@ -1,0 +1,6 @@
+[Unit]
+Description=Rebuild the local SwayNC generic-switch extension
+
+[Service]
+Type=oneshot
+ExecStart=/home/ncls/.local/bin/swaync-generic-switch-build update-if-needed

@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch Pacman metadata for SwayNC updates
+
+[Path]
+PathChanged=/var/lib/pacman/local
+Unit=swaync-generic-switch-rebuild.service
+
+[Install]
+WantedBy=default.target

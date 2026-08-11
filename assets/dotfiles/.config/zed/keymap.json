@@ -1,0 +1,9 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-p": "project_symbols::Toggle",
+      "ctrl-g": "git_panel::ToggleFocus"
+    }
+  }
+]

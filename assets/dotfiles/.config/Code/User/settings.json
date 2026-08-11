@@ -1,0 +1,42 @@
+{
+  "editor.fontSize": 16,
+  "editor.fontFamily": "'Consolas'",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "git.openRepositoryInParentFolders": "never",
+  "kotlin.languageServer.enabled": false,
+  "kotlin.debugAdapter.enabled": false,
+  "debug.console.fontFamily": "Hack Nerd Font",
+  "debug.console.fontSize": 18,
+  "debug.console.lineHeight": 21,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "redhat.telemetry.enabled": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+  },
+  "workbench.iconTheme": "a-file-icon-vscode",
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "chat.viewSessions.orientation": "stacked",
+}

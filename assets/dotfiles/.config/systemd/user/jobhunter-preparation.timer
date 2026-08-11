@@ -1,0 +1,11 @@
+[Unit]
+Description=Prepare the next Jobhunter daily application
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=jobhunter-preparation.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,10 @@
+# Original Matrix palette, kept as a one-line rollback option.
+matrix_bg='#000000'
+matrix_panel='#06120A'
+matrix_text='#C8FFD8'
+matrix_green='#39FF14'
+matrix_green_dark='#0B3D1B'
+matrix_cyan='#00E5D4'
+matrix_amber='#F5C542'
+matrix_red='#FF3B5C'
+matrix_muted='#4B5563'

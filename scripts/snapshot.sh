@@ -1,138 +1,244 @@
 #!/usr/bin/env bash
-# ==============================================================================
-#  snapshot.sh - Takes a clean, minimal snapshot of user dotfiles & packages
-# ==============================================================================
-set -euo pipefail
+# Capture the portable PC-base profile without ever publishing credentials or
+# leaving a partial snapshot in the repository.
+set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="${ARCH_HYPRLAND_REPO_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+SOURCE_HOME="${SNAPSHOT_HOME:-$HOME}"
+ASSETS_DIR="$REPO_ROOT/assets"
+PATHS_FILE="$ASSETS_DIR/snapshot-paths.txt"
+STAGE_DIR=""
 
-DOTFILES_DIR="$REPO_ROOT/assets/dotfiles"
-PACKAGES_DIR="$REPO_ROOT/assets/packages"
+log() { printf '[snapshot] %s\n' "$*"; }
+die() { printf '[snapshot] error: %s\n' "$*" >&2; exit 1; }
 
-echo "=== 📸 Starting Clean System Snapshot ==="
-echo "Repo root: $REPO_ROOT"
-echo "Dotfiles destination: $DOTFILES_DIR"
+cleanup() {
+  [[ -n "$STAGE_DIR" && -d "$STAGE_DIR" ]] && rm -rf -- "$STAGE_DIR"
+}
+trap cleanup EXIT
 
-# Clean target dotfiles dir
-rm -rf "$DOTFILES_DIR"
-mkdir -p "$DOTFILES_DIR"
-mkdir -p "$PACKAGES_DIR"
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
+}
 
-# Core configuration paths relative to $HOME
-TARGET_PATHS=(
-  ".config/hypr"
-  ".config/waybar"
-  ".config/rofi"
-  ".config/quickshell"
-  ".config/kitty"
-  ".config/ghostty"
-  ".config/wezterm"
-  ".config/nvim"
-  ".config/fastfetch"
-  ".config/btop"
-  ".config/cava"
-  ".config/swaync"
-  ".config/wlogout"
-  ".config/wallust"
-  ".config/gtk-3.0"
-  ".config/gtk-4.0"
-  ".config/qt5ct"
-  ".config/qt6ct"
-  ".config/Kvantum"
-  ".config/swappy"
-  ".config/Thunar"
-  ".config/xfce4"
-  ".config/xsettingsd"
-  ".config/environment.d"
-  ".config/mimeapps.list"
-  ".config/pavucontrol.ini"
-  ".config/user-dirs.dirs"
-  ".zshrc"
-  ".p10k.zsh"
-  ".gitconfig"
-  ".gtkrc-2.0"
-  ".Xresources"
-)
+valid_relative_path() {
+  [[ "$1" != /* && "$1" != *".."* && "$1" != "." && -n "$1" ]]
+}
 
-copy_clean() {
-  local src="$1"
-  local dest="$2"
+copy_config() {
+  local source="$SOURCE_HOME/.config"
+  local destination="$STAGE_DIR/dotfiles/.config"
+  [[ -d "$source" ]] || die "expected configuration directory does not exist: $source"
 
-  mkdir -p "$(dirname "$dest")"
-  if [ -d "$src" ] && [ ! -L "$src" ]; then
-    mkdir -p "$dest"
-    cp -a "$src/." "$dest/"
+  # These patterns intentionally favour safety over completeness. Application
+  # credentials must be recreated on every machine, never committed to Git.
+  local -a excludes=(
+    '--exclude=.cache/***'
+    '--exclude=.local/***'
+    '--exclude=**/Cache/***'
+    '--exclude=**/GPUCache/***'
+    '--exclude=**/Code Cache/***'
+    '--exclude=**/CachedData/***'
+    '--exclude=**/CachedExtensionVSIXs/***'
+    '--exclude=**/workspaceStorage/***'
+    '--exclude=**/Local Storage/***'
+    '--exclude=**/IndexedDB/***'
+    '--exclude=**/Service Worker/***'
+    '--exclude=**/Session Storage/***'
+    '--exclude=**/Singleton*'
+    '--exclude=**/*.log'
+    '--exclude=**/*.sqlite'
+    '--exclude=**/*.sqlite-*'
+    '--exclude=**/*.db'
+    '--exclude=**/*.pem'
+    '--exclude=**/*.key'
+    '--exclude=**/.env'
+    '--exclude=**/.env.*'
+    '--exclude=**/*token*'
+    '--exclude=**/*Token*'
+    '--exclude=**/*secret*'
+    '--exclude=**/*Secret*'
+    '--exclude=**/*password*'
+    '--exclude=**/*Password*'
+    '--exclude=**/google-chrome/***'
+    '--exclude=**/google-chrome-for-testing/***'
+    '--exclude=**/chromium/***'
+    '--exclude=**/BraveSoftware/***'
+    '--exclude=**/Mozilla/***'
+    '--exclude=**/mozilla/***'
+    '--exclude=JetBrains/analyzer/***'
+    '--exclude=JetBrains/***'
+    '--exclude=Code/***'
+    '--exclude=pulse/***'
+    '--exclude=Code/User/History/***'
+    '--exclude=Code/User/globalStorage/***'
+    '--exclude=Code/User/workspaceStorage/***'
+    '--exclude=opencode/node_modules/***'
+    '--exclude=Slack/***'
+    '--exclude=discord/***'
+    '--exclude=anytype/data/***'
+    '--exclude=hypr/wallpaper_effects/***'
+    '--exclude=gh/***'
+    '--exclude=gcloud/***'
+    '--exclude=rclone/***'
+    '--exclude=aws/***'
+    '--exclude=azure/***'
+    '--exclude=op/***'
+    '--exclude=codex/***'
+    '--exclude=codex-mobile/***'
+    '--exclude=configstore/***'
+    '--exclude=**/*accounts*'
+    '--exclude=**/Cookies*'
+    '--exclude=systemd/user/arch-hyprland-snapshot.service'
+    '--exclude=systemd/user/arch-hyprland-snapshot.timer'
+    '--exclude=systemd/user/timers.target.wants/arch-hyprland-snapshot.timer'
+  )
+
+  mkdir -p "$destination"
+  if command -v rsync >/dev/null 2>&1; then
+    rsync -a --safe-links --prune-empty-dirs "${excludes[@]}" "$source/" "$destination/"
   else
-    cp -a "$src" "$dest"
+    log 'rsync is unavailable; using the streaming tar fallback'
+    (
+      cd "$source"
+      tar --create --file=- --wildcards "${excludes[@]}" .
+    ) | (
+      cd "$destination"
+      tar --extract --file=- --preserve-permissions
+    )
+    # Keep the fallback's exclusions aligned with the rsync rules above.
+    find "$destination" -type d \( -name '.cache' -o -name '.local' -o -name 'Cache' -o -name 'GPUCache' -o -name 'Code Cache' -o -name 'workspaceStorage' -o -name 'Local Storage' -o -name 'IndexedDB' -o -name 'Service Worker' -o -name 'Session Storage' -o -name 'google-chrome' -o -name 'google-chrome-for-testing' -o -name 'chromium' -o -name 'BraveSoftware' -o -name 'Mozilla' -o -name 'mozilla' -o -name 'Slack' -o -name 'discord' -o -name 'Code' -o -name 'JetBrains' -o -name 'pulse' -o -name 'gh' -o -name 'gcloud' -o -name 'rclone' -o -name 'aws' -o -name 'azure' -o -name 'op' -o -name 'codex' -o -name 'codex-mobile' -o -name 'configstore' \) -prune -exec rm -rf -- {} +
+    rm -rf -- "$destination/JetBrains" "$destination/Code" "$destination/pulse" "$destination/opencode/node_modules" "$destination/anytype/data" "$destination/hypr/wallpaper_effects" "$destination/configstore"
+    find "$destination" -type f \( -name '*.log' -o -name '*.sqlite' -o -name '*.sqlite-*' -o -name '*.db' -o -name '*.pem' -o -name '*.key' -o -name '*.env' -o -name '.env.*' -o -name 'Cookies*' -o -iname '*token*' -o -iname '*secret*' -o -iname '*password*' -o -iname '*accounts*' \) -delete
+    find "$destination" -type l \( -lname '/*' -o -lname '*..*' \) -delete
+    rm -f -- "$destination/systemd/user/arch-hyprland-snapshot.service" "$destination/systemd/user/arch-hyprland-snapshot.timer" "$destination/systemd/user/timers.target.wants/arch-hyprland-snapshot.timer"
+  fi
+
+  # Electron and JetBrains keep credentials and multi-gigabyte runtime state in
+  # .config. Re-add only the settings that make the editors behave like the
+  # PC base on a fresh machine.
+  local code_source="$source/Code/User"
+  local code_destination="$destination/Code/User"
+  local code_item
+  for code_item in settings.json keybindings.json mcp.json tasks.json extensions.json snippets; do
+    [[ -e "$code_source/$code_item" ]] || continue
+    mkdir -p "$code_destination"
+    cp -a -- "$code_source/$code_item" "$code_destination/$code_item"
+  done
+
+  local product component product_name
+  for product in "$source/JetBrains"/*; do
+    [[ -d "$product" ]] || continue
+    product_name="$(basename "$product")"
+    for component in options codestyles keymaps colors templates inspection; do
+      [[ -e "$product/$component" ]] || continue
+      mkdir -p "$destination/JetBrains/$product_name"
+      cp -a -- "$product/$component" "$destination/JetBrains/$product_name/$component"
+    done
+  done
+
+  # A portable monitor definition prevents connector names from the desktop
+  # PC (for example DP-3) from breaking Hyprland on a notebook.
+  mkdir -p "$destination/hypr"
+  cat >"$destination/hypr/monitors.conf" <<'EOF'
+# Portable profile generated by arch-hyprland snapshot.
+monitor = , preferred, auto, 1
+EOF
+}
+
+copy_profile_path() {
+  local relative_path="$1"
+  local source="$SOURCE_HOME/$relative_path"
+  local destination="$STAGE_DIR/dotfiles/$relative_path"
+
+  [[ "$relative_path" == '.config' ]] && { copy_config; return; }
+  [[ -e "$source" || -L "$source" ]] || { log "not present on base: $relative_path"; return; }
+  [[ -L "$source" ]] && { log "skipping symbolic link outside profile: $relative_path"; return; }
+
+  mkdir -p "$(dirname "$destination")"
+  if [[ -d "$source" ]]; then
+    if command -v rsync >/dev/null 2>&1; then
+      rsync -a --safe-links "$source/" "$destination/"
+    else
+      mkdir -p "$destination"
+      cp -a -- "$source/." "$destination/"
+    fi
+  else
+    cp -a -- "$source" "$destination"
   fi
 }
 
-for rel_path in "${TARGET_PATHS[@]}"; do
-  src_path="$HOME/$rel_path"
-  dest_path="$DOTFILES_DIR/$rel_path"
-
-  if [ -e "$src_path" ] || [ -L "$src_path" ]; then
-    echo "  [+] Copying $rel_path..."
-    copy_clean "$src_path" "$dest_path"
+capture_packages() {
+  local packages_dir="$STAGE_DIR/packages"
+  mkdir -p "$packages_dir"
+  pacman -Qqen | LC_ALL=C sort -u >"$packages_dir/pacman-explicit.txt"
+  if command -v yay >/dev/null 2>&1; then
+    yay -Qqm | grep -vxE '^(yay|yay-bin|paru)$' | LC_ALL=C sort -u >"$packages_dir/aur-explicit.txt" || true
   else
-    echo "  [-] Skipping (not found): $rel_path"
+    pacman -Qqem | grep -vxE '^(yay|yay-bin|paru)$' | LC_ALL=C sort -u >"$packages_dir/aur-explicit.txt" || true
   fi
-done
+  pacman -Qqe | LC_ALL=C sort >"$packages_dir/pacman-versions.txt"
+  pacman -Qqm | grep -vE '^(yay|yay-bin|paru) ' | LC_ALL=C sort >"$packages_dir/aur-versions.txt" || true
+}
 
-# Snapshot ONLY the active wallpaper to keep the repository ultra-lean
-echo "  [+] Copying active wallpaper..."
-mkdir -p "$DOTFILES_DIR/pictures/wallpapers"
-if [ -f "$HOME/pictures/wallpapers/583256.jpg" ]; then
-  cp -a "$HOME/pictures/wallpapers/583256.jpg" "$DOTFILES_DIR/pictures/wallpapers/"
-fi
-if [ -f "$HOME/pictures/wallpapers/453073.jpg" ]; then
-  cp -a "$HOME/pictures/wallpapers/453073.jpg" "$DOTFILES_DIR/pictures/wallpapers/"
-fi
+validate_stage() {
+  [[ -d "$STAGE_DIR/dotfiles/.config" ]] || die 'snapshot validation failed: .config was not captured'
+  [[ -f "$STAGE_DIR/packages/pacman-explicit.txt" ]] || die 'snapshot validation failed: pacman list is missing'
+  [[ -f "$STAGE_DIR/packages/aur-explicit.txt" ]] || die 'snapshot validation failed: AUR list is missing'
+  local oversized
+  oversized="$(find "$STAGE_DIR/dotfiles" -type f -size +95M -print -quit)"
+  [[ -z "$oversized" ]] || die "snapshot validation failed: file exceeds GitHub's practical size limit: $oversized"
+  if command -v rg >/dev/null 2>&1; then
+    local sensitive_paths
+    sensitive_paths="$(rg -l -i --pcre2 '(sk-(?:proj-)?[A-Za-z0-9_-]{20,}|github_pat_[A-Za-z0-9_]{20,}|ghp_[A-Za-z0-9]{20,}|api[_-]?key[[:space:]]*[:=])' "$STAGE_DIR/dotfiles" 2>/dev/null || true)"
+    [[ -z "$sensitive_paths" ]] || die "snapshot validation failed: possible credential found in $sensitive_paths"
+  fi
+}
 
-echo "=== 🧹 Pruning Unused Catalogs & Caches ==="
-# Clean temporary files & caches
-find "$DOTFILES_DIR" -type d -name ".git" -exec rm -rf {} + 2>/dev/null || true
-find "$DOTFILES_DIR" -type d -name ".cache" -exec rm -rf {} + 2>/dev/null || true
-find "$DOTFILES_DIR" -type d -name ".local" -exec rm -rf {} + 2>/dev/null || true
-find "$DOTFILES_DIR" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-find "$DOTFILES_DIR" -name "*.log" -delete 2>/dev/null || true
-find "$DOTFILES_DIR" -name "*.pyc" -delete 2>/dev/null || true
-find "$DOTFILES_DIR" -name ".zsh_history" -delete 2>/dev/null || true
+replace_snapshot_artifact() {
+  local staged="$1"
+  local target="$2"
+  local previous="${target}.previous.$$"
+  [[ -e "$staged" ]] || die "staged artifact is missing: $staged"
+  rm -rf -- "$previous"
+  if [[ -e "$target" ]]; then
+    mv -- "$target" "$previous"
+  fi
+  if ! mv -- "$staged" "$target"; then
+    [[ -e "$previous" ]] && mv -- "$previous" "$target"
+    die "could not replace $target"
+  fi
+  rm -rf -- "$previous"
+}
 
-# Prune nested duplicates
-rm -rf "$DOTFILES_DIR/.config/rofi/themes/themes"
-rm -rf "$DOTFILES_DIR/.config/hypr/UserConfigs/UserConfigs"
-rm -rf "$DOTFILES_DIR/.config/hypr/UserScripts/UserScripts"
-rm -rf "$DOTFILES_DIR/.config/hypr/animations/animations"
-rm -rf "$DOTFILES_DIR/.config/hypr/Monitor_Profiles/Monitor_Profiles"
+main() {
+  [[ -f "$PATHS_FILE" ]] || die "path manifest not found: $PATHS_FILE"
+  [[ -d "$SOURCE_HOME" ]] || die "home directory not found: $SOURCE_HOME"
+  require_command pacman
 
-# Prune unused Waybar themes catalog (keep ONLY active theme & config)
-echo "  [+] Pruning unused Waybar presets..."
-if [ -d "$DOTFILES_DIR/.config/waybar/configs" ]; then
-  find "$DOTFILES_DIR/.config/waybar/configs" -mindepth 1 ! -name '\[TOP\] Everforest' -exec rm -rf {} + 2>/dev/null || true
-fi
-if [ -d "$DOTFILES_DIR/.config/waybar/style" ]; then
-  find "$DOTFILES_DIR/.config/waybar/style" -mindepth 1 ! -name '\[Dark\] Wallust Obsidian Edge.css' -exec rm -rf {} + 2>/dev/null || true
-fi
+  STAGE_DIR="$(mktemp -d "$REPO_ROOT/.snapshot-stage.XXXXXX")"
+  mkdir -p "$STAGE_DIR/dotfiles"
+  while IFS= read -r relative_path || [[ -n "$relative_path" ]]; do
+    [[ -z "$relative_path" || "$relative_path" == \#* ]] && continue
+    valid_relative_path "$relative_path" || die "unsafe path in manifest: $relative_path"
+    log "capturing $relative_path"
+    copy_profile_path "$relative_path"
+  done <"$PATHS_FILE"
 
-# Ensure relative symlinks for Waybar
-cd "$DOTFILES_DIR/.config/waybar"
-ln -sf "configs/[TOP] Everforest" config
-ln -sf "style/[Dark] Wallust Obsidian Edge.css" style.css
-cd "$REPO_ROOT"
+  capture_packages
+  cat >"$STAGE_DIR/snapshot-metadata.env" <<EOF
+SNAPSHOT_FORMAT=2
+CREATED_AT=$(date --iso-8601=seconds)
+PACMAN_PACKAGE_COUNT=$(wc -l <"$STAGE_DIR/packages/pacman-explicit.txt")
+AUR_PACKAGE_COUNT=$(wc -l <"$STAGE_DIR/packages/aur-explicit.txt")
+EOF
+  validate_stage
 
-echo "=== 📦 Exporting Package Lists ==="
-pacman -Qqen | sort > "$PACKAGES_DIR/pacman-explicit.txt"
-if command -v yay &>/dev/null; then
-  yay -Qqm | sort > "$PACKAGES_DIR/aur-explicit.txt"
-elif command -v paru &>/dev/null; then
-  paru -Qqm | sort > "$PACKAGES_DIR/aur-explicit.txt"
-else
-  pacman -Qqem | sort > "$PACKAGES_DIR/aur-explicit.txt"
-fi
+  replace_snapshot_artifact "$STAGE_DIR/dotfiles" "$ASSETS_DIR/dotfiles"
+  replace_snapshot_artifact "$STAGE_DIR/packages" "$ASSETS_DIR/packages"
+  replace_snapshot_artifact "$STAGE_DIR/snapshot-metadata.env" "$ASSETS_DIR/snapshot-metadata.env"
+  log 'snapshot completed successfully'
+}
 
-echo "  [+] Native packages: $(wc -l < "$PACKAGES_DIR/pacman-explicit.txt")"
-echo "  [+] AUR packages: $(wc -l < "$PACKAGES_DIR/aur-explicit.txt")"
-
-echo "=== ✅ Clean Snapshot Completed Successfully! ==="
+main "$@"

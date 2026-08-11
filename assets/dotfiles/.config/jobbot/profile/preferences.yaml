@@ -1,0 +1,35 @@
+schema_version: "1"
+contracts:
+  - contractor
+contract_observation: Somente vagas que declarem contratação PJ explicitamente.
+remote:
+  accepts_remote: true
+  countries: []
+  timezones:
+    - America/Sao_Paulo
+workload:
+  minimum_hours_per_week: null
+  maximum_hours_per_week: 40
+allow_undisclosed_workload: true
+availability:
+  notice_period_days: 0
+salary:
+  minimum: 9000
+  maximum: 10000
+  currency: BRL
+  period: month
+contractor_salary:
+  minimum: 5000
+  currency: BRL
+  period: month
+  baseline_hours_per_week: 30
+allow_undisclosed_salary: true
+restrictions:
+  accepts_onsite: false
+  accepts_hybrid: false
+  accepts_exclusivity: null
+  accepts_on_call: true
+  accepts_meetings: null
+blocked_sectors: []
+blocked_companies: []
+allows_second_contract: true

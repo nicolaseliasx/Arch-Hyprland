@@ -1,0 +1,10 @@
+# Loaded inside ~/.p10k.zsh; the names stay stable so palettes are swappable.
+matrix_bg='#1A1B26'
+matrix_panel='#24283B'
+matrix_text='#C0CAF5'
+matrix_green='#7AA2F7'
+matrix_green_dark='#3B4261'
+matrix_cyan='#7DCFFF'
+matrix_amber='#E0AF68'
+matrix_red='#F7768E'
+matrix_muted='#787C99'

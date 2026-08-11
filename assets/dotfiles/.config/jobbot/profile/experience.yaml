@@ -1,0 +1,62 @@
+schema_version: "1"
+experiences:
+  - id: bridge-software-engineer
+    company: Laboratório Bridge
+    role: Software Engineer
+    start_date: 2022-03
+    end_date: null
+    activities:
+      - Uso experiente de ferramentas e agentes de IA no desenvolvimento de software no Laboratório Bridge, incluindo Codex e Claude Code em fluxos de contexto, planejamento, implementação, revisão, segurança e qualidade.
+      - Evolução e modernização de módulos críticos do e-SUS APS PEC com Java, Kotlin, Spring, GraphQL e React.
+      - Implementação de compatibilidade retroativa, correção e reprocessamento de dados históricos em PostgreSQL e Oracle.
+      - Responsabilidade técnica por subentregas, refinamento, divisão de tarefas, code review e mentoria.
+      - Estruturação de observabilidade de módulos de duas equipes com Sentry, Grafana e alertas no Slack.
+      - Infraestrutura genérica de tour guiado com React Joyride, wrapper multirrota e persistência no backend.
+    results:
+      - Processou e corrigiu dados na casa de milhões de registros, sem número exato.
+      - Revisou mais de seis PRs por sprint, como estimativa confirmada.
+      - Orientou aproximadamente cinco desenvolvedores e estagiários.
+      - A estrutura de tour guiado foi reutilizada por outras equipes.
+    technologies:
+      - {name: Java, key: java}
+      - {name: Kotlin, key: kotlin}
+      - {name: Spring Boot, key: spring-boot}
+      - {name: GraphQL, key: graphql}
+      - {name: JPA, key: jpa}
+      - {name: Hibernate, key: hibernate}
+      - {name: Querydsl, key: querydsl}
+      - {name: PostgreSQL, key: postgresql}
+      - {name: Oracle, key: oracle}
+      - {name: Liquibase, key: liquibase}
+      - {name: React, key: react}
+      - {name: TypeScript, key: typescript}
+      - {name: Sentry, key: sentry}
+      - {name: Grafana, key: grafana}
+      - {name: AI, key: ai}
+      - {name: LLM, key: llm}
+      - {name: Codex, key: codex}
+      - {name: Claude Code, key: claude-code}
+  - id: pet-computacao
+    company: PET Computação — UFSC
+    role: PET Computing Scholarship Student
+    start_date: 2021-03
+    end_date: 2022-02
+    activities:
+      - Apoio a projetos de extensão em bolsa acadêmica remunerada de 20 horas semanais.
+      - Participação em projeto de benchmark de bancos de dados com SQL.
+      - Aprendizado e aplicação de Python na UFSC em disciplinas, projetos acadêmicos e preparação de minicursos para novos alunos.
+    results: []
+    technologies:
+      - {name: Python, key: python}
+      - {name: SQL, key: sql}
+  - id: fab-soldado
+    company: Força Aérea Brasileira
+    role: Air Force Soldier
+    start_date: "2019"
+    end_date: "2021"
+    activities:
+      - Atuação em ambiente operacional com disciplina, protocolos, trabalho sob pressão e trabalho em equipe.
+      - Liderança informal de militares de menor antiguidade.
+    results:
+      - Recebeu Honra ao Mérito no encerramento do vínculo, em 2021.
+    technologies: []

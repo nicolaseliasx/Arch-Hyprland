@@ -1,0 +1,13 @@
+[Unit]
+Description=Jobhunter prepare one daily application
+After=network-online.target
+
+[Service]
+Type=oneshot
+UMask=0077
+WorkingDirectory=%h/projects/job-hunter
+Environment=JOBHUNTER_CONFIG=%h/.config/jobhunter/config.yaml
+Environment=PATH=%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+EnvironmentFile=-%h/.config/jobhunter/jobhunter.env
+ExecStart=%h/.local/bin/poetry run jobhunter run --prepare-next
+TimeoutStartSec=15min
