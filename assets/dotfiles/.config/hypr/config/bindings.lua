@@ -44,9 +44,13 @@ hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd("/home/ncls/.config/hypr/scripts/Chan
 hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("/home/ncls/.config/hypr/scripts/ClipManager.sh"), {description = "clipboard manager"})
 hl.bind("SUPER + CTRL + R", hl.dsp.exec_cmd("/home/ncls/.config/hypr/scripts/RofiThemeSelector.sh"), {description = "rofi theme selector"})
 hl.bind("SUPER + CTRL + SHIFT + R", hl.dsp.exec_cmd("pkill rofi || true && /home/ncls/.config/hypr/scripts/RofiThemeSelector-modified.sh"), {description = "rofi theme selector (modified)"})
-hl.bind("SUPER + SHIFT + F", dispatch("fullscreen", ""), {description = "fullscreen"})
-hl.bind("SUPER + CTRL + F", dispatch("fullscreen", "1"), {description = "maximize window"})
-hl.bind("SUPER + SPACE", dispatch("togglefloating", ""), {description = "Float current window"})
+-- Do not route these through `hyprctl dispatch`: in Hyprland's Lua config
+-- mode, that CLI subcommand evaluates Lua rather than the legacy dispatcher
+-- syntax.  Native dispatchers keep the common Super shortcuts working.
+hl.bind("SUPER + F", hl.dsp.window.fullscreen({ action = "toggle" }), {description = "fullscreen"})
+hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen({ action = "toggle" }), {description = "fullscreen"})
+hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ action = "toggle", mode = 1 }), {description = "maximize window"})
+hl.bind("SUPER + SPACE", hl.dsp.window.float({ action = "toggle" }), {description = "Float current window"})
 hl.bind("SUPER + ALT + SPACE", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allfloat"), {description = "Float all windows"})
 hl.bind("SUPER + SHIFT + Return", hl.dsp.exec_cmd("/home/ncls/.config/hypr/scripts/Dropterminal.sh kitty"), {description = "DropDown terminal"})
 hl.bind("SUPER + ALT + mouse_down", hl.dsp.exec_cmd("/home/ncls/.config/hypr/scripts/Zoom.sh in 2"), {description = "zoom in"})
