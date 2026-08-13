@@ -14,25 +14,32 @@ repository cloned on `main`. Then run:
 ```
 
 The installer asks for the sudo password once and keeps that authorization
-alive for the duration of the run. Its terminal UI shows the safety warning,
-offers **repair/update** or **clean reinstall**, detects NVIDIA hardware and,
-when applicable, displays a driver selection. No `INSTALL` phrase is required.
+alive for the duration of the run. Its `whiptail` terminal UI follows the
+guided flow of the base fork: welcome/safety screen, **repair/update** or
+**clean reinstall** choice, then an NVIDIA driver choice when a GPU is found.
+The actual installation stays visible in the terminal and writes a detailed
+log, rather than repeatedly clearing the screen with progress popups.
 
 Repair mode is idempotent and can be run again after an interrupted or failed
 installation. Clean reinstall moves the managed Oh My Zsh and Code Flow
 runtime directories to a dated backup, then recreates the complete profile.
 It does not delete documents, credentials, accounts, or unrelated packages.
 
-The script installs the package manifests with `yay`, then mirrors every path in
+The script installs core desktop dependencies first, then mirrors every path in
 [`assets/snapshot-paths.txt`](assets/snapshot-paths.txt). Existing files in
 those paths are overwritten, and a dated manual backup is stored under
 `~/.local/state/arch-hyprland/backups/`. It does not partition disks, create
 users, copy SSH keys, enable a snapshot timer, or upload anything.
 
-Package failures are collected and reported together. The installer does not
-apply the profile or display a success screen while a required package is
-missing. A final diagnostic verifies Hyprland configuration, greetd/UWSM,
-Waybar selectors, wallpaper, theme, Zsh, Eza, Codex CLI and Code Flow.
+Package failures are collected and reported with their criticality. Core
+packages block only the dependent profile setup; Wallust is a theme warning
+because the committed generated palette remains usable; applications listed in
+`assets/packages/*-optional.txt` are reported as `OPTIONAL` and never block
+Hyprland, dotfiles, Zsh, or the session. A failed AUR build is retried exactly
+once after removing only that package's Yay cache and performing a clean build;
+package integrity checks are never disabled. The final diagnostic verifies
+Hyprland configuration, greetd/UWSM, Waybar selectors, wallpaper, theme, Zsh,
+Eza, Codex CLI and Code Flow.
 
 The credential-free Code Flow core is bundled under `assets/code-flow`; the
 machine does not need access to its separate source repository. If Codex CLI

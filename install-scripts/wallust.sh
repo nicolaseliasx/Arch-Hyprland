@@ -1,231 +1,44 @@
-#!/bin/bash
-# ==================================================
-#  nclsDots (2026)
-#  Project URL: https://github.com/LinuxBeginnings
-#  License: GNU GPLv3
-#  SPDX-License-Identifier: GPL-3.0-or-later
-# ==================================================
-# 💫 https://github.com/LinuxBeginnings 💫 #
-# Wallust 3.5.2 (AUR tarball) installer #
+#!/usr/bin/env bash
+# Install Wallust without bypassing makepkg integrity checks.  This compatibility
+# entry point is used by the legacy component scripts; install.sh uses the same
+# retry policy for its theme stage.
+set -Eeuo pipefail
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+log_file="${ARCH_HYPRLAND_LOG_FILE:-${XDG_STATE_HOME:-$HOME/.local/state}/arch-hyprland/wallust-install.log}"
+cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/yay"
+cache_path="$cache_root/wallust"
+yay_args=(--needed --noconfirm --answerclean All --answerdiff None --cleanmenu=false --diffmenu=false)
 
-# Change the working directory to the parent directory of the script
-PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || {
-  echo "${ERROR} Failed to change directory to $PARENT_DIR"
+mkdir -p "$(dirname "$log_file")"
+log() { printf '[wallust] %s\n' "$*" | tee -a "$log_file"; }
+
+command -v yay >/dev/null 2>&1 || {
+  printf 'yay is required to install wallust\n' >&2
   exit 1
 }
 
-# Source the global functions script
-if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
-  exit 1
-fi
-
-# Set the name of the log file to include the current date and time
-LOG_DIR="$PARENT_DIR/Install-Logs"
-mkdir -p "$LOG_DIR"
-LOG="$LOG_DIR/install-$(date +%d-%H%M%S)_wallust.log"
-
-ARCHIVE_PATH="$SCRIPT_DIR/wallust-3.5.2.tar.gz"
-TARGET_VERSION="3.5.2"
-PACMAN_CONF="/etc/pacman.conf"
-
-if [ ! -f "$ARCHIVE_PATH" ]; then
-  echo -e "${ERROR} Missing archive: ${YELLOW}$ARCHIVE_PATH${RESET}"
-  exit 1
-fi
-
-installed_version=""
-get_wallust_version() {
-  local raw_version=""
-  raw_version="$(pacman -Q wallust 2>/dev/null | awk '{print $2}' || true)"
-  [ -n "$raw_version" ] || return 1
-
-  # Normalize package version:
-  #   1:3.5.2-1 -> 3.5.2
-  #   3.5.2-1   -> 3.5.2
-  raw_version="${raw_version%%-*}"
-  raw_version="${raw_version#*:}"
-
-  [ -n "$raw_version" ] || return 1
-  printf '%s\n' "$raw_version"
-}
-
-installed_version="$(get_wallust_version || true)"
-
-is_compatible_version() {
-  [[ "$1" =~ ^3\.5(\.|$) ]]
-}
-
-is_wallust_pinned() {
-  awk '
-    function has_wallust(value,   i, n, parts) {
-      gsub(/^[[:space:]]+|[[:space:]]+$/, "", value)
-      n = split(value, parts, /[[:space:]]+/)
-      for (i = 1; i <= n; i++) {
-        if (parts[i] == "wallust") {
-          return 1
-        }
-      }
-      return 0
-    }
-    BEGIN {
-      in_options = 0
-      found = 0
-    }
-    /^[[:space:]]*\[/ {
-      in_options = ($0 ~ /^[[:space:]]*\[options\][[:space:]]*$/)
-    }
-    in_options && /^[[:space:]]*IgnorePkg[[:space:]]*=/ {
-      line = $0
-      sub(/^[[:space:]]*IgnorePkg[[:space:]]*=[[:space:]]*/, "", line)
-      if (has_wallust(line)) {
-        found = 1
-        exit
-      }
-    }
-    END {
-      exit(found ? 0 : 1)
-    }
-  ' "$PACMAN_CONF"
-}
-
-ensure_ignore_pkg() {
-  tmp_conf="$(mktemp)"
-  awk '
-    function has_wallust(value,   i, n, parts) {
-      gsub(/^[[:space:]]+|[[:space:]]+$/, "", value)
-      n = split(value, parts, /[[:space:]]+/)
-      for (i = 1; i <= n; i++) {
-        if (parts[i] == "wallust") {
-          return 1
-        }
-      }
-      return 0
-    }
-    BEGIN {
-      in_options = 0
-      saw_options = 0
-      wrote_ignore = 0
-    }
-    /^[[:space:]]*\[/ {
-      if (in_options && !wrote_ignore) {
-        print "IgnorePkg = wallust"
-        wrote_ignore = 1
-      }
-      in_options = ($0 ~ /^[[:space:]]*\[options\][[:space:]]*$/)
-      if (in_options) {
-        saw_options = 1
-      }
-      print
-      next
-    }
-    !in_options && /^[[:space:]]*IgnorePkg[[:space:]]*=/ {
-      line = $0
-      sub(/^[[:space:]]*IgnorePkg[[:space:]]*=[[:space:]]*/, "", line)
-      if (has_wallust(line)) {
-        next
-      }
-    }
-    in_options && /^[[:space:]]*IgnorePkg[[:space:]]*=/ {
-      line = $0
-      sub(/^[[:space:]]*IgnorePkg[[:space:]]*=[[:space:]]*/, "", line)
-      if (has_wallust(line)) {
-        print
-      } else if (line == "") {
-        print "IgnorePkg = wallust"
-      } else {
-        print "IgnorePkg = " line " wallust"
-      }
-      wrote_ignore = 1
-      next
-    }
-    in_options && /^[[:space:]]*#[[:space:]]*IgnorePkg[[:space:]]*=/ && !wrote_ignore {
-      print "IgnorePkg = wallust"
-      wrote_ignore = 1
-      next
-    }
-    {
-      print
-    }
-    END {
-      if (in_options && !wrote_ignore) {
-        print "IgnorePkg = wallust"
-      } else if (!saw_options) {
-        print ""
-        print "[options]"
-        print "IgnorePkg = wallust"
-      }
-    }
-  ' "$PACMAN_CONF" > "$tmp_conf" || {
-    rm -f "$tmp_conf"
-    echo -e "${ERROR} Failed to update ${YELLOW}$PACMAN_CONF${RESET}."
-    return 1
-  }
-
-  if ! cmp -s "$tmp_conf" "$PACMAN_CONF"; then
-    sudo cp "$tmp_conf" "$PACMAN_CONF" || {
-      rm -f "$tmp_conf"
-      echo -e "${ERROR} Failed to write ${YELLOW}$PACMAN_CONF${RESET}."
-      return 1
-    }
-  fi
-  rm -f "$tmp_conf"
-
-  if is_wallust_pinned; then
-    echo -e "${OK} wallust pinned in ${YELLOW}$PACMAN_CONF${RESET} via IgnorePkg."
-    return 0
-  fi
-
-  echo -e "${ERROR} Failed to pin wallust in ${YELLOW}$PACMAN_CONF${RESET}."
-  return 1
-}
-
-if [ -n "$installed_version" ] && is_compatible_version "$installed_version"; then
-  echo -e "${INFO} wallust ${YELLOW}$installed_version${RESET} is compatible (3.5.x)."
-  ensure_ignore_pkg || exit 1
+if pacman -Q wallust >/dev/null 2>&1 && command -v wallust >/dev/null 2>&1; then
+  log "Wallust is already installed: $(wallust --version 2>/dev/null || pacman -Q wallust)"
   exit 0
 fi
 
-if [ -n "$installed_version" ]; then
-  if [[ "$installed_version" =~ ^4\. ]]; then
-    echo -e "${NOTE} Incompatible wallust ${YELLOW}$installed_version${RESET} detected. Downgrading to ${YELLOW}$TARGET_VERSION${RESET}."
-  else
-    echo -e "${NOTE} Unsupported wallust ${YELLOW}$installed_version${RESET} detected. Installing ${YELLOW}$TARGET_VERSION${RESET}."
-  fi
-  uninstall_package "wallust"
+log 'Installing Wallust with normal package integrity verification.'
+if yay -S "${yay_args[@]}" wallust >>"$log_file" 2>&1; then
+  command -v wallust >/dev/null 2>&1
+  exit 0
 fi
 
-printf "%s - Installing ${SKY_BLUE}wallust ${TARGET_VERSION}${RESET} from bundled tarball... \n" "${NOTE}"
-
-BUILD_DIR="$(mktemp -d)"
-tar -xf "$ARCHIVE_PATH" -C "$BUILD_DIR"
-
-PKG_DIR="$(find "$BUILD_DIR" -maxdepth 1 -type d -name "wallust*" -print -quit)"
-if [ -z "$PKG_DIR" ]; then
-  echo -e "${ERROR} Failed to locate extracted wallust directory."
-  rm -rf "$BUILD_DIR"
+# A stale Yay clone can retain an obsolete PKGBUILD/source checksum.  Only this
+# package cache is removed, then one clean rebuild is tried; checksums remain on.
+if [[ -d "$cache_path" && "$cache_path" == "$cache_root/"* ]]; then
+  log "Removing failed Wallust build cache: $cache_path"
+  rm -rf -- "$cache_path"
+fi
+log 'Retrying Wallust once after metadata refresh and clean build.'
+yay -Syu --noconfirm --answerclean All --answerdiff None --cleanmenu=false --diffmenu=false >>"$log_file" 2>&1 || \
+  log 'Metadata refresh failed; attempting the clean build with the currently available metadata.'
+yay -S "${yay_args[@]}" --cleanbuild wallust >>"$log_file" 2>&1
+command -v wallust >/dev/null 2>&1 || {
+  printf 'wallust was not available after the clean-build retry\n' >&2
   exit 1
-fi
-
-pushd "$PKG_DIR" >/dev/null
-makepkg -si --noconfirm 2>&1 | tee -a "$LOG"
-popd >/dev/null
-
-rm -rf "$BUILD_DIR"
-
-if new_version="$(get_wallust_version)"; then
-  if is_compatible_version "$new_version"; then
-    echo -e "${OK} wallust ${YELLOW}$new_version${RESET} installed successfully."
-    ensure_ignore_pkg || exit 1
-  else
-    echo -e "${ERROR} wallust installed but version is ${YELLOW}$new_version${RESET}. Expected 3.5.x."
-    exit 1
-  fi
-else
-  echo -e "${ERROR} wallust installation failed. Please check ${YELLOW}$LOG${RESET}."
-  exit 1
-fi
+}

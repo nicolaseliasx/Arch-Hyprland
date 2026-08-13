@@ -18,6 +18,11 @@ if [[ -z "$wallpaper_bin" ]]; then
   exit 0
 fi
 
+if ! command -v wallust >/dev/null 2>&1; then
+  printf 'wallust is unavailable; retaining the committed fallback palette\n' >&2
+  exit 0
+fi
+
 cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/swww/"
 if [[ "$wallpaper_bin" == "awww" ]]; then
   awww_cache_base="${XDG_CACHE_HOME:-$HOME/.cache}/awww"
@@ -137,12 +142,18 @@ wait_for_templates() {
 # Run wallust (silent) to regenerate templates defined in ~/.config/wallust/wallust.toml
 # -s is used in this repo to keep things quiet and avoid extra prompts
 start_ts=$(date +%s)
-wallust run -s "$wallpaper_path" || true
+if ! wallust run -s "$wallpaper_path"; then
+  printf 'wallust could not generate colors for %s\n' "$wallpaper_path" >&2
+  exit 1
+fi
 wallust_targets=(
   "$HOME/.config/waybar/wallust/colors-waybar.css"
   "$HOME/.config/rofi/wallust/colors-rofi.rasi"
 )
-wait_for_templates "$start_ts" "${wallust_targets[@]}" || true
+wait_for_templates "$start_ts" "${wallust_targets[@]}" || {
+  printf 'wallust did not create all expected color files\n' >&2
+  exit 1
+}
 
 # Normalize Ghostty palette syntax in case ':' was used by older files
 if [ -f "$HOME/.config/ghostty/wallust.conf" ]; then

@@ -1,3 +1,7 @@
+# This inventory is retained for snapshots and human reference.  The installer
+# uses aur-required.txt and aur-optional.txt so an application failure cannot
+# block the desktop profile.
+wallust
 anytype-bin
 downgrade
 gtk-engine-murrine
@@ -8,5 +12,4 @@ spotify
 stremio
 ttf-victor-mono
 visual-studio-code-bin
-wallust
 waybar-git

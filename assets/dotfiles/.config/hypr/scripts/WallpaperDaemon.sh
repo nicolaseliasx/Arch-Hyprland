@@ -64,4 +64,6 @@ log "applying $wallpaper_path"
 }
 
 wallust_script="$HOME/.config/hypr/scripts/WallustSwww.sh"
-[[ -x "$wallust_script" ]] && "$wallust_script" "$wallpaper_path" >/dev/null 2>&1 || true
+if [[ -x "$wallust_script" ]] && ! "$wallust_script" "$wallpaper_path"; then
+  log 'Wallust generation failed; using the committed fallback palette'
+fi
