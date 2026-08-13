@@ -16,6 +16,7 @@ cava
 chntpw
 cliphist
 dbeaver
+ddcutil
 discord
 dmidecode
 docker
@@ -77,6 +78,7 @@ nwg-displays
 nwg-look
 obsidian
 okular
+openai-chatgpt
 openrgb
 openvpn
 os-prober
@@ -108,6 +110,7 @@ spotify
 stremio
 swappy
 swaync
+syncthing
 tailscale
 texlive-binextra
 texlive-fontsrecommended

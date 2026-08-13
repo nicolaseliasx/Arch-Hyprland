@@ -11,7 +11,7 @@ Output: Forensic report saved to `.planning/forensics/`, presented inline, with 
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/forensics.md
+@$HOME/.config/opencode/gsd-core/workflows/forensics.md
 </execution_context>
 
 <context>

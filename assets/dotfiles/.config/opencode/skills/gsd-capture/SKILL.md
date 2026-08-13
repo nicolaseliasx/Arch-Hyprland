@@ -29,13 +29,13 @@ Mode routing:
 </routing>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/add-todo.md
-@/home/ncls/.config/opencode/gsd-core/workflows/note.md
-@/home/ncls/.config/opencode/gsd-core/workflows/add-backlog.md
-@/home/ncls/.config/opencode/gsd-core/workflows/plant-seed.md
-@/home/ncls/.config/opencode/gsd-core/workflows/check-todos.md
-@/home/ncls/.config/opencode/gsd-core/workflows/list-seeds.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/add-todo.md
+@$HOME/.config/opencode/gsd-core/workflows/note.md
+@$HOME/.config/opencode/gsd-core/workflows/add-backlog.md
+@$HOME/.config/opencode/gsd-core/workflows/plant-seed.md
+@$HOME/.config/opencode/gsd-core/workflows/check-todos.md
+@$HOME/.config/opencode/gsd-core/workflows/list-seeds.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <context>

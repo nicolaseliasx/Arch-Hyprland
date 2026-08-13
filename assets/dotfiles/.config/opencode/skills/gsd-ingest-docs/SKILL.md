@@ -17,10 +17,10 @@ Auto-synthesizes most conflicts using the precedence rule `ADR > SPEC > PRD > DO
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/ingest-docs.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
-@/home/ncls/.config/opencode/gsd-core/references/gate-prompts.md
-@/home/ncls/.config/opencode/gsd-core/references/doc-conflict-engine.md
+@$HOME/.config/opencode/gsd-core/workflows/ingest-docs.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/references/gate-prompts.md
+@$HOME/.config/opencode/gsd-core/references/doc-conflict-engine.md
 </execution_context>
 
 <context>

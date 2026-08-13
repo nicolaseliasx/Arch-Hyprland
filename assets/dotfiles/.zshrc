@@ -32,7 +32,7 @@ fi
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # opencode
-export PATH=/home/ncls/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
 
 zed() {
   zeditor "$@"
@@ -41,3 +41,9 @@ zed() {
 diff() {
   zeditor .
 }
+
+
+
+# >>> codex-flow managed >>>
+source "$HOME/.local/share/codex-flow/shell/init.zsh"
+# <<< codex-flow managed <<<

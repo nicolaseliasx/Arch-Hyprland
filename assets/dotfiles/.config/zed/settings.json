@@ -98,7 +98,7 @@
     "Java": {
       "formatter": {
         "external": {
-          "command": "/home/ncls/.local/bin/zed-intellij-format",
+          "command": "$HOME/.local/bin/zed-intellij-format",
           "arguments": ["{buffer_path}"]
         }
       },
@@ -108,7 +108,7 @@
       "language_servers": ["kotlin-language-server", "!kotlin-lsp", "..."],
       "formatter": {
         "external": {
-          "command": "/home/ncls/.local/bin/zed-intellij-format",
+          "command": "$HOME/.local/bin/zed-intellij-format",
           "arguments": ["{buffer_path}"]
         }
       },

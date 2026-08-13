@@ -18,8 +18,8 @@ Routes to the profile-user workflow which orchestrates the full flow: consent ga
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/profile-user.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/profile-user.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <context>

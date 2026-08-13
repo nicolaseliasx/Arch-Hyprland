@@ -8,7 +8,7 @@ Scan all phases for pending, skipped, blocked, and human_needed UAT items. Cross
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/audit-uat.md
+@$HOME/.config/opencode/gsd-core/workflows/audit-uat.md
 </execution_context>
 
 <context>

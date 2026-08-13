@@ -32,8 +32,8 @@ Context budget: ~15% orchestrator, 100% fresh per subagent.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/execute-phase.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/execute-phase.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <runtime_note>

@@ -54,11 +54,11 @@ state, `.env` files, private-key files, known credential directories (including
 GitHub CLI and Codex Mobile), account files and paths named like tokens, secrets or passwords. Large
 application state such as JetBrains analyzer workspaces, VS Code history and
 workspace storage/extension caches, Hyprland generated wallpaper effects,
-Slack/Discord sessions, VS Code runtime data and browser profiles is also
+Slack/Discord sessions, Anytype/Obsidian/Codex application state, VS Code runtime data and browser profiles is also
 excluded. The remote snapshot systemd units are excluded as well. This keeps
 the visual and development configuration portable while requiring each machine
 to sign in to personal services separately.
 
-`~/.config/hypr/monitors.conf` is normalized to an automatic monitor profile,
-so a desktop connector name does not prevent Hyprland from starting on a
-notebook.
+Home-directory references are rewritten to `$HOME`. Hyprland's monitor,
+workspace, lock-screen and wake configuration is normalized to avoid desktop
+connector names, so the profile starts safely on a single-panel notebook.

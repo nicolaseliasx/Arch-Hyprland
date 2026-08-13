@@ -18,9 +18,9 @@ Spawned by `discuss-phase-assumptions` via `Task()`. You do NOT present output d
 - Flag topics where codebase analysis alone is insufficient (needs external research)
 </role>
 
-@/home/ncls/.config/opencode/gsd-core/references/untrusted-input-boundary.md
+@$HOME/.config/opencode/gsd-core/references/untrusted-input-boundary.md
 
-**agent_skills:** self-load per @/home/ncls/.config/opencode/gsd-core/references/agent-skills-bootstrap.md
+**agent_skills:** self-load per @$HOME/.config/opencode/gsd-core/references/agent-skills-bootstrap.md
 
 <input>
 Agent receives via prompt:

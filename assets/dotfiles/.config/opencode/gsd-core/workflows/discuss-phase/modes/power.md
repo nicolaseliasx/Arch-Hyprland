@@ -8,7 +8,7 @@
 ## Dispatch
 
 ```
-Read @/home/ncls/.config/opencode/gsd-core/workflows/discuss-phase-power.md
+Read @$HOME/.config/opencode/gsd-core/workflows/discuss-phase-power.md
 ```
 
 Execute it end-to-end. Do not continue with the standard interactive steps.

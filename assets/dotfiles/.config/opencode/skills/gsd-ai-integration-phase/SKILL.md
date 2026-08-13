@@ -10,9 +10,9 @@ Flow: Select Framework → Research Docs → Research Domain → Design Eval Str
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/ai-integration-phase.md
-@/home/ncls/.config/opencode/gsd-core/references/ai-frameworks.md
-@/home/ncls/.config/opencode/gsd-core/references/ai-evals.md
+@$HOME/.config/opencode/gsd-core/workflows/ai-integration-phase.md
+@$HOME/.config/opencode/gsd-core/references/ai-frameworks.md
+@$HOME/.config/opencode/gsd-core/references/ai-evals.md
 </execution_context>
 
 <context>

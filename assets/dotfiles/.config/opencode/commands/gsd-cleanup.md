@@ -14,7 +14,7 @@ Use when `.planning/phases/` has accumulated directories from past milestones.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/cleanup.md
+@$HOME/.config/opencode/gsd-core/workflows/cleanup.md
 </execution_context>
 
 <process>

@@ -20,7 +20,7 @@ Routes to the settings workflow which handles:
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/settings.md
+@$HOME/.config/opencode/gsd-core/workflows/settings.md
 </execution_context>
 
 <process>

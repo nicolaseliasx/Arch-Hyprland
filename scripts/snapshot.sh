@@ -77,7 +77,9 @@ copy_config() {
     '--exclude=opencode/node_modules/***'
     '--exclude=Slack/***'
     '--exclude=discord/***'
-    '--exclude=anytype/data/***'
+    '--exclude=anytype/***'
+    '--exclude=obsidian/***'
+    '--exclude=Codex/***'
     '--exclude=hypr/wallpaper_effects/***'
     '--exclude=gh/***'
     '--exclude=gcloud/***'
@@ -108,8 +110,8 @@ copy_config() {
       tar --extract --file=- --preserve-permissions
     )
     # Keep the fallback's exclusions aligned with the rsync rules above.
-    find "$destination" -type d \( -name '.cache' -o -name '.local' -o -name 'Cache' -o -name 'GPUCache' -o -name 'Code Cache' -o -name 'workspaceStorage' -o -name 'Local Storage' -o -name 'IndexedDB' -o -name 'Service Worker' -o -name 'Session Storage' -o -name 'google-chrome' -o -name 'google-chrome-for-testing' -o -name 'chromium' -o -name 'BraveSoftware' -o -name 'Mozilla' -o -name 'mozilla' -o -name 'Slack' -o -name 'discord' -o -name 'Code' -o -name 'JetBrains' -o -name 'pulse' -o -name 'gh' -o -name 'gcloud' -o -name 'rclone' -o -name 'aws' -o -name 'azure' -o -name 'op' -o -name 'codex' -o -name 'codex-mobile' -o -name 'configstore' \) -prune -exec rm -rf -- {} +
-    rm -rf -- "$destination/JetBrains" "$destination/Code" "$destination/pulse" "$destination/opencode/node_modules" "$destination/anytype/data" "$destination/hypr/wallpaper_effects" "$destination/configstore"
+    find "$destination" -type d \( -name '.cache' -o -name '.local' -o -name 'Cache' -o -name 'GPUCache' -o -name 'Code Cache' -o -name 'workspaceStorage' -o -name 'Local Storage' -o -name 'IndexedDB' -o -name 'Service Worker' -o -name 'Session Storage' -o -name 'google-chrome' -o -name 'google-chrome-for-testing' -o -name 'chromium' -o -name 'BraveSoftware' -o -name 'Mozilla' -o -name 'mozilla' -o -name 'Slack' -o -name 'discord' -o -name 'Code' -o -name 'JetBrains' -o -name 'pulse' -o -name 'gh' -o -name 'gcloud' -o -name 'rclone' -o -name 'aws' -o -name 'azure' -o -name 'op' -o -name 'codex' -o -name 'Codex' -o -name 'codex-mobile' -o -name 'configstore' -o -name 'anytype' -o -name 'obsidian' \) -prune -exec rm -rf -- {} +
+    rm -rf -- "$destination/JetBrains" "$destination/Code" "$destination/pulse" "$destination/opencode/node_modules" "$destination/anytype" "$destination/obsidian" "$destination/Codex" "$destination/hypr/wallpaper_effects" "$destination/configstore"
     find "$destination" -type f \( -name '*.log' -o -name '*.sqlite' -o -name '*.sqlite-*' -o -name '*.db' -o -name '*.pem' -o -name '*.key' -o -name '*.env' -o -name '.env.*' -o -name 'Cookies*' -o -iname '*token*' -o -iname '*secret*' -o -iname '*password*' -o -iname '*accounts*' \) -delete
     find "$destination" -type l \( -lname '/*' -o -lname '*..*' \) -delete
     rm -f -- "$destination/systemd/user/arch-hyprland-snapshot.service" "$destination/systemd/user/arch-hyprland-snapshot.timer" "$destination/systemd/user/timers.target.wants/arch-hyprland-snapshot.timer"
@@ -169,15 +171,47 @@ copy_profile_path() {
   fi
 }
 
+normalize_portable_profile() {
+  local dotfiles="$STAGE_DIR/dotfiles"
+  local escaped_source_home portable_home file
+  escaped_source_home="${SOURCE_HOME//\\/\\\\}"
+  escaped_source_home="${escaped_source_home//|/\\|}"
+  escaped_source_home="${escaped_source_home//&/\\&}"
+  portable_home='$HOME'
+
+  # Snapshot source paths must not tie the restored profile to one username.
+  while IFS= read -r -d '' file; do
+    grep -Iq . "$file" || continue
+    sed -i "s|$escaped_source_home|$portable_home|g" "$file"
+  done < <(find "$dotfiles" -type f -print0)
+
+  # Keep the versioned profile usable on a single-panel notebook. The base PC
+  # can recreate its connector-specific layout locally with nwg-displays.
+  if [[ -f "$dotfiles/.config/hypr/workspaces.conf" ]]; then
+    sed -i '/^[[:space:]]*workspace[[:space:]]*=.*,[[:space:]]*monitor:/d' "$dotfiles/.config/hypr/workspaces.conf"
+  fi
+  if [[ -f "$dotfiles/.config/hypr/hyprlock.conf" ]]; then
+    sed -i 's/^[[:space:]]*monitor[[:space:]]*=.*$/    monitor =/' "$dotfiles/.config/hypr/hyprlock.conf"
+  fi
+  if [[ -f "$dotfiles/.config/hypr/hypridle.conf" ]]; then
+    sed -i 's|^[[:space:]]*unlock_cmd[[:space:]]*=.*$|    unlock_cmd = hyprctl dispatch dpms on|' "$dotfiles/.config/hypr/hypridle.conf"
+  fi
+  if [[ -f "$dotfiles/.config/hypr/scripts/LockScreen.sh" ]]; then
+    sed -i \
+      -e "s|hyprctl eval 'hl.monitor({ output = \"DP-2\", disabled = true })'|hyprctl dispatch dpms off|" \
+      -e "s|hyprctl eval 'hl.monitor({ output = \"DP-2\", disabled = false })'|hyprctl dispatch dpms on|" \
+      "$dotfiles/.config/hypr/scripts/LockScreen.sh"
+  fi
+}
+
 capture_packages() {
   local packages_dir="$STAGE_DIR/packages"
   mkdir -p "$packages_dir"
   pacman -Qqen | LC_ALL=C sort -u >"$packages_dir/pacman-explicit.txt"
-  if command -v yay >/dev/null 2>&1; then
-    yay -Qqm | grep -vxE '^(yay|yay-bin|paru)$' | LC_ALL=C sort -u >"$packages_dir/aur-explicit.txt" || true
-  else
-    pacman -Qqem | grep -vxE '^(yay|yay-bin|paru)$' | LC_ALL=C sort -u >"$packages_dir/aur-explicit.txt" || true
-  fi
+  # Only preserve explicitly installed foreign packages. `yay -Qqm` also
+  # includes dependency and split debug packages that cannot be installed by
+  # name on a fresh machine (for example waybar-git-debug).
+  pacman -Qqem | grep -vxE '^(yay|yay-bin|paru)$' | LC_ALL=C sort -u >"$packages_dir/aur-explicit.txt" || true
   pacman -Qqe | LC_ALL=C sort >"$packages_dir/pacman-versions.txt"
   pacman -Qqm | grep -vE '^(yay|yay-bin|paru) ' | LC_ALL=C sort >"$packages_dir/aur-versions.txt" || true
 }
@@ -226,6 +260,7 @@ main() {
     copy_profile_path "$relative_path"
   done <"$PATHS_FILE"
 
+  normalize_portable_profile
   capture_packages
   cat >"$STAGE_DIR/snapshot-metadata.env" <<EOF
 SNAPSHOT_FORMAT=2

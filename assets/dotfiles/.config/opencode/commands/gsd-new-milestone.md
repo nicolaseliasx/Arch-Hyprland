@@ -25,11 +25,11 @@ Brownfield equivalent of new-project. Project exists, PROJECT.md has history. Ga
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/new-milestone.md
-@/home/ncls/.config/opencode/gsd-core/references/questioning.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
-@/home/ncls/.config/opencode/gsd-core/templates/project.md
-@/home/ncls/.config/opencode/gsd-core/templates/requirements.md
+@$HOME/.config/opencode/gsd-core/workflows/new-milestone.md
+@$HOME/.config/opencode/gsd-core/references/questioning.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/templates/project.md
+@$HOME/.config/opencode/gsd-core/templates/requirements.md
 </execution_context>
 
 <context>

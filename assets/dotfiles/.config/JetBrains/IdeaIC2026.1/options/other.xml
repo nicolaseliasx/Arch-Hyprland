@@ -1,6 +1,6 @@
 <application>
   <component name="CodeStyleSchemesUIConfiguration">
-    <option name="RECENT_IMPORT_FILE_LOCATION" value="file:/home/ncls/bridge/pec/bridge-intellij-formatter.xml" />
+    <option name="RECENT_IMPORT_FILE_LOCATION" value="file:$HOME/bridge/pec/bridge-intellij-formatter.xml" />
   </component>
   <component name="FileEditorProviderManager">{}</component>
   <component name="LangManager">
@@ -21,6 +21,7 @@
     "MemberChooser.copyJavadoc": "false",
     "MemberChooser.showClasses": "true",
     "MoveFile.OpenInEditor": "true",
+    "PluginConfigurable.selectionTab": "1",
     "RunOnceActivity.TerminalOptionsProvider.TerminalEngineMigration.2026.1": "true",
     "RunOnceActivity.TerminalOptionsProvider.appTitleMigration.2026.1.1": "true",
     "RunOnceActivity.TerminalOptionsProvider.migration.2025.1.1": "true",
@@ -41,7 +42,7 @@
     "experimental.ui.on.first.startup": "true",
     "experimental.ui.used.version": "261.26222.65",
     "file.gist.reindex.count": "5",
-    "fileTypeChangedCounter": "2",
+    "fileTypeChangedCounter": "4",
     "fontSizeToResetConsole": "18.0",
     "fontSizeToResetEditor": "18.0",
     "git.working.trees.stop.showing.new.badge": "true",
@@ -53,7 +54,7 @@
     "installed.kotlin.plugin.version": "261.26222.65-IJ",
     "kotlin.lastUpdateCheck": "1785345982436",
     "kotlin.updates.whats.new.shown.for": "2.3.10",
-    "last_opened_file_path": "/home/ncls/projects/bridge/pec",
+    "last_opened_file_path": "$HOME/projects/bridge/pec",
     "migrated.non.roamable.values.from.general.settings": "true",
     "previousColorScheme": "_@user_Visual Studio Code Dark Plus",
     "registry.to.advanced.settings.migration.build": "IC-261.26222.65",
@@ -62,22 +63,22 @@
   },
   "keyToStringList": {
     "file.chooser.recent.files": [
-      "/home/ncls/projects/bridge/pec-teste-formatter",
-      "/home/ncls/projects/bridge/pec",
-      "/home/ncls/projects/bridge/pec-33042-ajustes_justificativaNaoPossuiCpf-FV",
-      "/home/ncls/projects/bridge/pec-33087-ajustar-combo-vacinarnds",
-      "/home/ncls/projects/bridge/pec-32984-config-acesso-acs-asb",
-      "/home/ncls/projects/bridge/pec/bridge-intellij-formatter.xml",
-      "/home/ncls/projects/bridge/pec-33087-ajustar-combo-vacina-rnds",
-      "/home/ncls/projects/bridge",
-      "/home/ncls/projects/bridge/pec-spike-historico",
-      "/home/ncls/projects/bridge/pec-piloto",
-      "/home/ncls/projects/pec",
-      "/home/ncls/projects/pec-2",
-      "/home/ncls/projects/pec-aux",
-      "/home/ncls/bridge/pec/bridge-intellij-formatter.xml",
-      "/home/ncls/bridge/pec-aux",
-      "/home/ncls/bridge/pec"
+      "$HOME/projects/bridge/pec-teste-formatter",
+      "$HOME/projects/bridge/pec",
+      "$HOME/projects/bridge/pec-33042-ajustes_justificativaNaoPossuiCpf-FV",
+      "$HOME/projects/bridge/pec-33087-ajustar-combo-vacinarnds",
+      "$HOME/projects/bridge/pec-32984-config-acesso-acs-asb",
+      "$HOME/projects/bridge/pec/bridge-intellij-formatter.xml",
+      "$HOME/projects/bridge/pec-33087-ajustar-combo-vacina-rnds",
+      "$HOME/projects/bridge",
+      "$HOME/projects/bridge/pec-spike-historico",
+      "$HOME/projects/bridge/pec-piloto",
+      "$HOME/projects/pec",
+      "$HOME/projects/pec-2",
+      "$HOME/projects/pec-aux",
+      "$HOME/bridge/pec/bridge-intellij-formatter.xml",
+      "$HOME/bridge/pec-aux",
+      "$HOME/bridge/pec"
     ],
     "fileTypeDetectors": [
       "com.intellij.ide.scratch.ScratchFileServiceImpl$Detector",

@@ -13,8 +13,8 @@ Output: Milestone archived (roadmap + requirements), PROJECT.md evolved, git tag
 <execution_context>
 **Load these files NOW (before proceeding):**
 
-- @/home/ncls/.config/opencode/gsd-core/workflows/complete-milestone.md (main workflow)
-- @/home/ncls/.config/opencode/gsd-core/templates/milestone-archive.md (archive template)
+- @$HOME/.config/opencode/gsd-core/workflows/complete-milestone.md (main workflow)
+- @$HOME/.config/opencode/gsd-core/templates/milestone-archive.md (archive template)
   </execution_context>
 
 <context>

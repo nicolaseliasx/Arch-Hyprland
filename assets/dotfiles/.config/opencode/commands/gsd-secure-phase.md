@@ -22,7 +22,7 @@ Output: updated SECURITY.md.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/secure-phase.md
+@$HOME/.config/opencode/gsd-core/workflows/secure-phase.md
 </execution_context>
 
 <context>

@@ -15,7 +15,7 @@ doesn't belong to any specific phase.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/thread.md
+@$HOME/.config/opencode/gsd-core/workflows/thread.md
 </execution_context>
 
 <process>

@@ -17,7 +17,7 @@ changes that are irrelevant to code review.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/pr-branch.md
+@$HOME/.config/opencode/gsd-core/workflows/pr-branch.md
 </execution_context>
 
 <process>

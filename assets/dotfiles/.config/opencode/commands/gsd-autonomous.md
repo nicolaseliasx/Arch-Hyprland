@@ -26,8 +26,8 @@ Uses ROADMAP.md phase discovery and Skill() flat invocations for each phase comm
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/autonomous.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/autonomous.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <context>

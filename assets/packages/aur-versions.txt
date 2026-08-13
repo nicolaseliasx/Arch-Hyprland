@@ -2,6 +2,7 @@ anytype-bin
 downgrade
 gtk-engine-murrine
 gtk2
+openai-chatgpt
 qt5-location
 qt5-webchannel
 qt5-webengine

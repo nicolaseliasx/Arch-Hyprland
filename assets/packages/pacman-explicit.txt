@@ -15,6 +15,7 @@ cava
 chntpw
 cliphist
 dbeaver
+ddcutil
 discord
 dmidecode
 docker
@@ -101,6 +102,7 @@ slurp
 sof-firmware
 swappy
 swaync
+syncthing
 tailscale
 texlive-binextra
 texlive-fontsrecommended

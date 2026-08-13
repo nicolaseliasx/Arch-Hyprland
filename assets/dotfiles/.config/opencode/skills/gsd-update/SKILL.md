@@ -16,7 +16,7 @@ Routes to the update workflow which handles:
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/update.md
+@$HOME/.config/opencode/gsd-core/workflows/update.md
 </execution_context>
 
 <flags>
@@ -35,6 +35,6 @@ Parse the first token of $ARGUMENTS:
 </process>
 
 <execution_context_extended>
-@/home/ncls/.config/opencode/gsd-core/workflows/sync-skills.md
-@/home/ncls/.config/opencode/gsd-core/workflows/reapply-patches.md
+@$HOME/.config/opencode/gsd-core/workflows/sync-skills.md
+@$HOME/.config/opencode/gsd-core/workflows/reapply-patches.md
 </execution_context_extended>

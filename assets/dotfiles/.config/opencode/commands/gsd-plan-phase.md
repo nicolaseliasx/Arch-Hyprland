@@ -30,8 +30,8 @@ Create executable phase prompts (PLAN.md files) for a roadmap phase with integra
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/plan-phase.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/plan-phase.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <runtime_note>

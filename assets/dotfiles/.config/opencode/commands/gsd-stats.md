@@ -11,7 +11,7 @@ Display comprehensive project statistics including phase progress, plan executio
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/stats.md
+@$HOME/.config/opencode/gsd-core/workflows/stats.md
 </execution_context>
 
 <process>

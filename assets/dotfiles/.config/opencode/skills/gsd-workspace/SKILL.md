@@ -23,10 +23,10 @@ Mode routing:
 </routing>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/new-workspace.md
-@/home/ncls/.config/opencode/gsd-core/workflows/list-workspaces.md
-@/home/ncls/.config/opencode/gsd-core/workflows/remove-workspace.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/new-workspace.md
+@$HOME/.config/opencode/gsd-core/workflows/list-workspaces.md
+@$HOME/.config/opencode/gsd-core/workflows/remove-workspace.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <context>

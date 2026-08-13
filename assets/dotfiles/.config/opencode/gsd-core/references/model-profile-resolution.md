@@ -26,7 +26,7 @@ string** when nothing resolved.
 
 ## Lookup Table
 
-@/home/ncls/.config/opencode/gsd-core/references/model-profiles.md
+@$HOME/.config/opencode/gsd-core/references/model-profiles.md
 
 ## Passing the model to a spawn
 

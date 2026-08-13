@@ -13,7 +13,7 @@ Output: updated VALIDATION.md + generated test files.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/validate-phase.md
+@$HOME/.config/opencode/gsd-core/workflows/validate-phase.md
 </execution_context>
 
 <context>

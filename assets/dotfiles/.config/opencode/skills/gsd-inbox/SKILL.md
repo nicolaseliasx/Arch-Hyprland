@@ -13,7 +13,7 @@ and optionally applies labels or closes non-compliant submissions.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/inbox.md
+@$HOME/.config/opencode/gsd-core/workflows/inbox.md
 </execution_context>
 
 <context>

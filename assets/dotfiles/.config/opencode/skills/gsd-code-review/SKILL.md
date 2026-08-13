@@ -23,7 +23,7 @@ Output: {padded_phase}-REVIEW.md in phase directory + inline summary of findings
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/code-review.md
+@$HOME/.config/opencode/gsd-core/workflows/code-review.md
 </execution_context>
 
 <context>

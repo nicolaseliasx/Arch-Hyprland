@@ -16,7 +16,7 @@ Flag handling rule:
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/docs-update.md
+@$HOME/.config/opencode/gsd-core/workflows/docs-update.md
 </execution_context>
 
 <context>

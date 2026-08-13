@@ -1,6 +1,6 @@
 PORT=3000
-PROJECT_ROOT=/home/ncls
-CODEX_BIN=/home/ncls/.nvm/versions/node/v22.21.1/bin/codex
+PROJECT_ROOT=$HOME
+CODEX_BIN=$HOME/.nvm/versions/node/v22.21.1/bin/codex
 TAILSCALE_ALLOWED_LOGIN=k7438076@gmail.com
 APP_ORIGIN=https://archlinux.tail8af835.ts.net
 APP_URL=https://archlinux.tail8af835.ts.net

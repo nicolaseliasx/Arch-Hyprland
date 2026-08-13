@@ -18,7 +18,7 @@ Accepts an optional topic argument: `/gsd-explore authentication strategy`
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/explore.md
+@$HOME/.config/opencode/gsd-core/workflows/explore.md
 </execution_context>
 
 <process>

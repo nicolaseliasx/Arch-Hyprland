@@ -25,7 +25,7 @@ Flags:
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/audit-fix.md
+@$HOME/.config/opencode/gsd-core/workflows/audit-fix.md
 </execution_context>
 
 <process>

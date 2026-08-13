@@ -17,7 +17,7 @@ Verify milestone achieved its definition of done. Check requirements coverage, c
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/audit-milestone.md
+@$HOME/.config/opencode/gsd-core/workflows/audit-milestone.md
 </execution_context>
 
 <context>

@@ -17,12 +17,12 @@ Spawned by `discuss-phase` via `Task()`. You do NOT present output directly to t
 - Return structured markdown output for the main agent to synthesize
 </role>
 
-@/home/ncls/.config/opencode/gsd-core/references/untrusted-input-boundary.md
+@$HOME/.config/opencode/gsd-core/references/untrusted-input-boundary.md
 
-**agent_skills:** self-load per @/home/ncls/.config/opencode/gsd-core/references/agent-skills-bootstrap.md
+**agent_skills:** self-load per @$HOME/.config/opencode/gsd-core/references/agent-skills-bootstrap.md
 
 <documentation_lookup>
-@/home/ncls/.config/opencode/gsd-core/references/research-documentation-lookup.md
+@$HOME/.config/opencode/gsd-core/references/research-documentation-lookup.md
 </documentation_lookup>
 
 <input>

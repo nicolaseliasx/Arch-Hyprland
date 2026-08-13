@@ -1,6 +1,6 @@
 # Non-secret local configuration. Set OPENAI_API_KEY only in your environment.
 timezone: America/Sao_Paulo
-profile_dir: /home/ncls/projects/job-hunter/profile
+profile_dir: $HOME/projects/job-hunter/profile
 mode: review
 auto_enabled: false
 auto_adapter_allowlist:
@@ -74,5 +74,5 @@ diagnostics:
 agent_resume_maker:
   provider: agy
   model: gemini-3.1-pro-high
-  project_path: /home/ncls/projects/agent-resume-maker
+  project_path: $HOME/projects/agent-resume-maker
   timeout_seconds: 900

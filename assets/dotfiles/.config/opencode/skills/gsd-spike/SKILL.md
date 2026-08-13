@@ -17,9 +17,9 @@ Does not require prior new-project setup — auto-creates `.planning/spikes/` if
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/spike.md
-@/home/ncls/.config/opencode/gsd-core/workflows/spike-wrap-up.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/spike.md
+@$HOME/.config/opencode/gsd-core/workflows/spike-wrap-up.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <runtime_note>

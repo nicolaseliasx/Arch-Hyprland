@@ -21,7 +21,7 @@ Valid GSD subagent types (use exact names — do not fall back to 'general-purpo
 </available_agent_types>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/debug.md
+@$HOME/.config/opencode/gsd-core/workflows/debug.md
 </execution_context>
 
 <context>

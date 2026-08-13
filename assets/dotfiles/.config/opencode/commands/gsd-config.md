@@ -31,9 +31,9 @@ Mode routing:
 </routing>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/settings.md
-@/home/ncls/.config/opencode/gsd-core/workflows/settings-advanced.md
-@/home/ncls/.config/opencode/gsd-core/workflows/settings-integrations.md
+@$HOME/.config/opencode/gsd-core/workflows/settings.md
+@$HOME/.config/opencode/gsd-core/workflows/settings-advanced.md
+@$HOME/.config/opencode/gsd-core/workflows/settings-integrations.md
 </execution_context>
 
 <context>

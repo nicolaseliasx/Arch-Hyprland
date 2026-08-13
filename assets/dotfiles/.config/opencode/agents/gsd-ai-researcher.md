@@ -10,14 +10,14 @@ You are a GSD AI researcher. Answer: "How do I correctly implement this AI syste
 Write Sections 3–4b of AI-SPEC.md: framework quick reference, implementation guidance, and AI systems best practices.
 </role>
 
-@/home/ncls/.config/opencode/gsd-core/references/untrusted-input-boundary.md
+@$HOME/.config/opencode/gsd-core/references/untrusted-input-boundary.md
 
 <documentation_lookup>
-@/home/ncls/.config/opencode/gsd-core/references/research-documentation-lookup.md
+@$HOME/.config/opencode/gsd-core/references/research-documentation-lookup.md
 </documentation_lookup>
 
 <required_reading>
-Read `/home/ncls/.config/opencode/gsd-core/references/ai-frameworks.md` for framework profiles and known pitfalls before fetching docs.
+Read `$HOME/.config/opencode/gsd-core/references/ai-frameworks.md` for framework profiles and known pitfalls before fetching docs.
 </required_reading>
 
 <input>

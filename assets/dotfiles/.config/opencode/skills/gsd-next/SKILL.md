@@ -10,8 +10,8 @@ This is a launcher/router only. It never does the work itself. It reads project 
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/smart-entry.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/smart-entry.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -19,5 +19,5 @@ Arguments: $ARGUMENTS
 </context>
 
 <process>
-Follow /home/ncls/.config/opencode/gsd-core/workflows/smart-entry.md. Detect the situation, present the menu, and dispatch exactly one command. Then stop.
+Follow $HOME/.config/opencode/gsd-core/workflows/smart-entry.md. Detect the situation, present the menu, and dispatch exactly one command. Then stop.
 </process>

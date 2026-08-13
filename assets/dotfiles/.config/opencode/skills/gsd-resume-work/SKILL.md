@@ -16,7 +16,7 @@ Routes to the resume-project workflow which handles:
   </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/resume-project.md
+@$HOME/.config/opencode/gsd-core/workflows/resume-project.md
 </execution_context>
 
 <process>

@@ -33,11 +33,11 @@ Initialize a new project through unified flow: questioning → research (optiona
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/new-project.md
-@/home/ncls/.config/opencode/gsd-core/references/questioning.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
-@/home/ncls/.config/opencode/gsd-core/templates/project.md
-@/home/ncls/.config/opencode/gsd-core/templates/requirements.md
+@$HOME/.config/opencode/gsd-core/workflows/new-project.md
+@$HOME/.config/opencode/gsd-core/references/questioning.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/templates/project.md
+@$HOME/.config/opencode/gsd-core/templates/requirements.md
 </execution_context>
 
 <process>

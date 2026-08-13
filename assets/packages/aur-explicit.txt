@@ -1,9 +1,7 @@
 anytype-bin
 downgrade
 gtk-engine-murrine
-gtk2
-qt5-location
-qt5-webchannel
+openai-chatgpt
 qt5-webengine
 slack-desktop-wayland
 spotify
@@ -12,4 +10,3 @@ ttf-victor-mono
 visual-studio-code-bin
 wallust
 waybar-git
-waybar-git-debug

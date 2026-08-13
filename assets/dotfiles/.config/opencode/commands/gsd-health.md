@@ -21,7 +21,7 @@ Validate `.planning/` directory integrity and report actionable issues. Checks f
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/health.md
+@$HOME/.config/opencode/gsd-core/workflows/health.md
 </execution_context>
 
 <process>

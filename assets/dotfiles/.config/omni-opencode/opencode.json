@@ -14,6 +14,33 @@
   "model": "omniroute/auto/coding",
   "agent": {
     "build": { "model": "omniroute/auto/coding" },
-    "plan": { "model": "omniroute/auto/reasoning" }
+    "plan": { "model": "omniroute/auto/reasoning" },
+    "pipeline": {
+      "model": "omniroute/auto/coding",
+      "permission": {
+        "*": "deny",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "edit": "allow",
+        "bash": {
+          "*": "allow",
+          "git commit*": "deny",
+          "git push*": "deny",
+          "gh *": "deny",
+          "git tag*": "deny"
+        },
+        "skill": "allow",
+        "todowrite": "allow",
+        "question": "deny",
+        "task": "deny",
+        "webfetch": "deny",
+        "websearch": "deny",
+        "external_directory": "deny",
+        "plan_enter": "deny",
+        "plan_exit": "deny"
+      }
+    }
   }
 }

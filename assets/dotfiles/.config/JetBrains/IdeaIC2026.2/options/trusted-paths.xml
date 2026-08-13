@@ -1,0 +1,46 @@
+<application>
+  <component name="Trusted.Paths">
+    <option name="TRUSTED_PROJECT_PATHS">
+      <map>
+        <entry key="$USER_HOME$/bridge/pec" value="true" />
+        <entry key="$USER_HOME$/bridge/pec-aux" value="true" />
+        <entry key="$USER_HOME$/projects/bridge" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-28377-spike_redesign_impressao_acompprenatal" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-30274-infos-gestante-impressao-pre-natal" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-30274-infos-gestante-impressao-prenatal" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-30285-redesigngpdf-prenatal-exames" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-32984-config-acesso-acs-asb" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-33042-ajustes_justificativaNaoPossuiCpf-FV" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-33087-ajustar-combo-vacina-rnds" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-33087-ajustar-combo-vacinarnds" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-piloto" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-spike-historico" value="true" />
+        <entry key="$USER_HOME$/projects/bridge/pec-teste-formatter" value="true" />
+        <entry key="$USER_HOME$/projects/pec" value="true" />
+        <entry key="$USER_HOME$/projects/pec-2" value="true" />
+        <entry key="$USER_HOME$/projects/pec-3" value="true" />
+        <entry key="$USER_HOME$/projects/pec-3/backend/src/main/java/br/ufsc/bridge/pec/backend/module/atendimento/impressao" value="true" />
+        <entry key="$USER_HOME$/projects/pec-3/backend/src/main/java/br/ufsc/bridge/pec/backend/module/historicoclinico/command" value="true" />
+        <entry key="$USER_HOME$/projects/pec-aux" value="true" />
+        <entry key="/tmp/Idea.format.0bda0d18-4d5d-4bbf-9936-1d14c2c17b3e.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.23ba27fe-06d2-4a5c-a5c2-214d3b8d978a.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.47651ba2-01ba-45b2-b24b-15096e065261.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.52b55bcb-f0d3-425d-8d4f-1d428a872ba5.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.7d3ec268-10f7-4462-879f-4da0962259cd.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.9ee454b0-ca21-4267-90bf-2b7403fb8254.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.e17d14f1-0acb-4085-b634-eda8a1ec1dc8.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.ee61debc-9675-4390-8cd0-f7b1c6460b66.tmp/.idea" value="true" />
+        <entry key="/tmp/Idea.format.fbe4854d-f77a-4af8-a054-59f4f4cffc75.tmp/.idea" value="true" />
+      </map>
+    </option>
+  </component>
+  <component name="Trusted.Paths.Settings">
+    <option name="TRUSTED_PATHS">
+      <list>
+        <option value="$USER_HOME$/bridge" />
+        <option value="$USER_HOME$/projects" />
+      </list>
+    </option>
+  </component>
+</application>

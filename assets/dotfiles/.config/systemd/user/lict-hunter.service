@@ -6,7 +6,7 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=oneshot
-WorkingDirectory=/home/ncls/projects/lict-hunter
+WorkingDirectory=$HOME/projects/lict-hunter
 ExecStart=/usr/bin/docker compose up -d
 ExecStop=/usr/bin/docker compose down
 RemainAfterExit=yes

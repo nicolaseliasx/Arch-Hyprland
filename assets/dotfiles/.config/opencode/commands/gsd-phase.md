@@ -30,10 +30,10 @@ Mode routing:
 </routing>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/add-phase.md
-@/home/ncls/.config/opencode/gsd-core/workflows/insert-phase.md
-@/home/ncls/.config/opencode/gsd-core/workflows/remove-phase.md
-@/home/ncls/.config/opencode/gsd-core/workflows/edit-phase.md
+@$HOME/.config/opencode/gsd-core/workflows/add-phase.md
+@$HOME/.config/opencode/gsd-core/workflows/insert-phase.md
+@$HOME/.config/opencode/gsd-core/workflows/remove-phase.md
+@$HOME/.config/opencode/gsd-core/workflows/edit-phase.md
 </execution_context>
 
 <context>

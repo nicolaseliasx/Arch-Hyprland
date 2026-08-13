@@ -10,8 +10,8 @@ Produces EVAL-REVIEW.md with score, verdict, gaps, and remediation plan.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/eval-review.md
-@/home/ncls/.config/opencode/gsd-core/references/ai-evals.md
+@$HOME/.config/opencode/gsd-core/workflows/eval-review.md
+@$HOME/.config/opencode/gsd-core/references/ai-evals.md
 </execution_context>
 
 <context>

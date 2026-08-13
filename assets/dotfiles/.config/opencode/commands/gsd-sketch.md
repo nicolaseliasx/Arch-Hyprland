@@ -29,13 +29,13 @@ Does not require prior new-project setup — auto-creates `.planning/sketches/` 
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/sketch.md
-@/home/ncls/.config/opencode/gsd-core/workflows/sketch-wrap-up.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
-@/home/ncls/.config/opencode/gsd-core/references/sketch-theme-system.md
-@/home/ncls/.config/opencode/gsd-core/references/sketch-interactivity.md
-@/home/ncls/.config/opencode/gsd-core/references/sketch-tooling.md
-@/home/ncls/.config/opencode/gsd-core/references/sketch-variant-patterns.md
+@$HOME/.config/opencode/gsd-core/workflows/sketch.md
+@$HOME/.config/opencode/gsd-core/workflows/sketch-wrap-up.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/references/sketch-theme-system.md
+@$HOME/.config/opencode/gsd-core/references/sketch-interactivity.md
+@$HOME/.config/opencode/gsd-core/references/sketch-tooling.md
+@$HOME/.config/opencode/gsd-core/references/sketch-variant-patterns.md
 </execution_context>
 
 <runtime_note>

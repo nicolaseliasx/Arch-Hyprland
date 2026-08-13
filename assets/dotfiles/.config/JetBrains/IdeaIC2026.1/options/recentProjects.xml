@@ -282,28 +282,15 @@
             </RecentProjectMetaInfo>
           </value>
         </entry>
-        <entry key="$USER_HOME$/projects/bridge/pec">
-          <value>
-            <RecentProjectMetaInfo frameTitle="pec – TerritorioService.kt [backend]" projectWorkspaceId="37tRtTjdigcUVDXmlp1oh4iyNtb">
-              <option name="activationTimestamp" value="1785345838085" />
-              <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
-              <option name="build" value="IC-261.26222.65" />
-              <option name="buildTimestamp" value="1783375620000" />
-              <option name="colorInfo">
-                <RecentProjectColorInfo associatedIndex="0" />
-              </option>
-              <frame x="35" y="438" width="2548" height="1388" extendedState="6" />
-              <option name="productionCode" value="IC" />
-              <option name="projectOpenTimestamp" value="1784753629319" />
-            </RecentProjectMetaInfo>
-          </value>
-        </entry>
         <entry key="/tmp/Idea.format.fbe4854d-f77a-4af8-a054-59f4f4cffc75.tmp/.idea">
           <value>
             <RecentProjectMetaInfo projectWorkspaceId="3Gus3CJ4VecMeAd2UsUna6AVEXd">
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="5" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784832586913" />
             </RecentProjectMetaInfo>
@@ -315,6 +302,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="4" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784832590763" />
             </RecentProjectMetaInfo>
@@ -326,6 +316,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="3" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784845083162" />
             </RecentProjectMetaInfo>
@@ -337,6 +330,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="2" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784845136910" />
             </RecentProjectMetaInfo>
@@ -348,6 +344,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="1" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784845139448" />
             </RecentProjectMetaInfo>
@@ -359,6 +358,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="0" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784845716269" />
             </RecentProjectMetaInfo>
@@ -370,6 +372,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="8" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784845719786" />
             </RecentProjectMetaInfo>
@@ -381,6 +386,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="7" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784846133901" />
             </RecentProjectMetaInfo>
@@ -392,6 +400,9 @@
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
               <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="6" />
+              </option>
               <option name="productionCode" value="IC" />
               <option name="projectOpenTimestamp" value="1784846384716" />
             </RecentProjectMetaInfo>
@@ -399,7 +410,7 @@
         </entry>
         <entry key="$USER_HOME$/projects/bridge/pec-teste-formatter">
           <value>
-            <RecentProjectMetaInfo frameTitle="pec-teste-formatter – FormatterProbe.kt [pec (2) (br.ufsc.bridge)]" opened="true" projectWorkspaceId="3HBeMIfKzPFguigxIVQpTJkvtUo">
+            <RecentProjectMetaInfo frameTitle="pec-teste-formatter – FormatterProbe.kt [pec (2) (br.ufsc.bridge)]" projectWorkspaceId="3HBeMIfKzPFguigxIVQpTJkvtUo">
               <option name="activationTimestamp" value="1785346682318" />
               <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
               <option name="build" value="IC-261.26222.65" />
@@ -413,9 +424,25 @@
             </RecentProjectMetaInfo>
           </value>
         </entry>
+        <entry key="$USER_HOME$/projects/bridge/pec">
+          <value>
+            <RecentProjectMetaInfo frameTitle="pec – TerritorioService.kt [backend]" opened="true" projectWorkspaceId="37tRtTjdigcUVDXmlp1oh4iyNtb">
+              <option name="activationTimestamp" value="1786556817678" />
+              <option name="binFolder" value="$APPLICATION_HOME_DIR$/bin" />
+              <option name="build" value="IC-261.26222.65" />
+              <option name="buildTimestamp" value="1783375620000" />
+              <option name="colorInfo">
+                <RecentProjectColorInfo associatedIndex="0" />
+              </option>
+              <frame x="35" y="438" width="2548" height="1388" extendedState="6" />
+              <option name="productionCode" value="IC" />
+              <option name="projectOpenTimestamp" value="1786556707632" />
+            </RecentProjectMetaInfo>
+          </value>
+        </entry>
       </map>
     </option>
-    <option name="lastOpenedProject" value="$USER_HOME$/projects/bridge/pec-teste-formatter" />
+    <option name="lastOpenedProject" value="$USER_HOME$/projects/bridge/pec" />
     <option name="lastProjectLocation" value="$USER_HOME$/projects/bridge" />
   </component>
 </application>

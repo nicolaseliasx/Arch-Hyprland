@@ -19,7 +19,7 @@ planning via /gsd-plan-phase --reviews.
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/review.md
+@$HOME/.config/opencode/gsd-core/workflows/review.md
 </execution_context>
 
 <context>

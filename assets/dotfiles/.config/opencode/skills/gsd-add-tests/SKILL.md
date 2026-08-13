@@ -12,7 +12,7 @@ Output: Test files committed with message `test(phase-{N}): add unit and E2E tes
 </objective>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/add-tests.md
+@$HOME/.config/opencode/gsd-core/workflows/add-tests.md
 </execution_context>
 
 <context>

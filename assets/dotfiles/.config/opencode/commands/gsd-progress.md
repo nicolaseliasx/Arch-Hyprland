@@ -31,10 +31,10 @@ Three modes:
 </flags>
 
 <execution_context>
-@/home/ncls/.config/opencode/gsd-core/workflows/progress.md
-@/home/ncls/.config/opencode/gsd-core/workflows/next.md
-@/home/ncls/.config/opencode/gsd-core/workflows/do.md
-@/home/ncls/.config/opencode/gsd-core/references/ui-brand.md
+@$HOME/.config/opencode/gsd-core/workflows/progress.md
+@$HOME/.config/opencode/gsd-core/workflows/next.md
+@$HOME/.config/opencode/gsd-core/workflows/do.md
+@$HOME/.config/opencode/gsd-core/references/ui-brand.md
 </execution_context>
 
 <process>
