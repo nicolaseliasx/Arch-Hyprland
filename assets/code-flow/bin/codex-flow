@@ -1,0 +1,591 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+app_name="codex-flow"
+default_install_root="${CODEX_FLOW_HOME:-$HOME/.local/share/codex-flow}"
+default_bin_dir="$HOME/.local/bin"
+managed_begin="# >>> codex-flow managed >>>"
+managed_end="# <<< codex-flow managed <<<"
+clarify_begin="# >>> codex-flow clarify-task >>>"
+clarify_end="# <<< codex-flow clarify-task <<<"
+
+script_source="${BASH_SOURCE[0]:-$0}"
+while [[ -L "$script_source" ]]; do
+  script_dir="$(cd "$(dirname -- "$script_source")" && pwd -P)"
+  script_target="$(readlink "$script_source")"
+  if [[ "$script_target" != /* ]]; then
+    script_source="$script_dir/$script_target"
+  else
+    script_source="$script_target"
+  fi
+done
+source_root="$(cd "$(dirname -- "$script_source")/.." && pwd -P)"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  codex-flow install [--profile pec] [--repo PATH] [--install-root PATH] [--obsidian-review-dir PATH]
+  codex-flow profile install pec [--repo PATH] [--all-worktrees] [--refresh] [--obsidian-review-dir PATH]
+  codex-flow project bootstrap [--profile pec] [--repo PATH] [--all-worktrees] [--refresh] [--obsidian-review-dir PATH]
+  codex-flow doctor
+  codex-flow uninstall
+
+Defaults:
+  install root: ~/.local/share/codex-flow
+  bin dir:      ~/.local/bin
+  PEC root:     ~/projects/bridge/pec
+EOF
+}
+
+note() {
+  printf '%s\n' "$*"
+}
+
+err() {
+  printf '%s\n' "$*" >&2
+}
+
+die() {
+  err "error: $*"
+  exit 1
+}
+
+ensure_dir() {
+  mkdir -p "$1"
+}
+
+copy_tree() {
+  local src="$1"
+  local dst="$2"
+  local src_abs dst_abs
+  src_abs="$(cd "$src" && pwd -P)"
+  dst_abs="$(mkdir -p "$dst" && cd "$dst" && pwd -P)"
+  if [[ "$src_abs" == "$dst_abs" ]]; then
+    return 0
+  fi
+  ensure_dir "$dst"
+  cp -a "$src"/. "$dst"/
+}
+
+sync_codex_template() {
+  local template_root="$1"
+  local destination_root="$2"
+  local entry staged
+
+  [[ -d "$template_root" ]] || return 0
+
+  ensure_dir "$destination_root"
+  for entry in bin context skills; do
+    [[ -e "$template_root/$entry" || -L "$template_root/$entry" ]] || continue
+    staged="$(mktemp -d "$destination_root/.${entry}.sync.XXXXXX")"
+    cp -a "$template_root/$entry"/. "$staged"/ || { rm -rf "$staged"; return 1; }
+    if [[ -e "$destination_root/$entry" || -L "$destination_root/$entry" ]]; then
+      mv --exchange -T "$staged" "$destination_root/$entry" || { rm -rf "$staged"; return 1; }
+      rm -rf "$staged"
+    else
+      mv -T "$staged" "$destination_root/$entry"
+    fi
+  done
+
+  find "$destination_root/bin" -type f -exec chmod +x {} + 2>/dev/null || true
+}
+
+install_core_files() {
+  local install_root="$1"
+  ensure_dir "$install_root"
+  ensure_dir "$install_root/bin"
+  copy_tree "$source_root/shell" "$install_root/shell"
+  copy_tree "$source_root/bin" "$install_root/bin"
+  find "$install_root/shell" -maxdepth 1 -type f -name 'core.zsh.bak-*' -delete 2>/dev/null || true
+  sync_codex_template "$source_root/.codex" "$install_root/.codex"
+  chmod +x "$install_root/bin/codex-flow"
+}
+
+install_global_skill_links() {
+  local install_root="$1"
+  local codex_home
+  local skill_source="$install_root/.codex/skills/gh-cli-review"
+
+  [[ -d "$skill_source" ]] || return 0
+  for codex_home in "$HOME/.codex"; do
+    ensure_dir "$codex_home/skills"
+    ln -sfnT "$skill_source" "$codex_home/skills/gh-cli-review"
+  done
+}
+
+sync_global_clarify_task() {
+  local destination_root="$1"
+  local source_dir="$source_root/global-skills/clarify-task"
+
+  [[ -d "$source_dir" ]] || return 0
+  ensure_dir "$destination_root/skills"
+  rm -rf "$destination_root/skills/clarify-task"
+  cp -a "$source_dir" "$destination_root/skills/clarify-task"
+}
+
+write_clarify_agents_block() {
+  local agents_file="$1"
+  local tmp
+
+  ensure_dir "$(dirname -- "$agents_file")"
+  [[ -f "$agents_file" ]] || touch "$agents_file"
+  tmp="$(mktemp)"
+  awk -v begin="$clarify_begin" -v end="$clarify_end" '
+    $0 == begin { skip=1; next }
+    $0 == end { skip=0; next }
+    skip != 1 { print }
+  ' "$agents_file" > "$tmp"
+  {
+    cat "$tmp"
+    printf '\n%s\n' "$clarify_begin"
+    printf '%s\n' '- MUST: use `$clarify-task` for explicit requests to plan, analyze an issue, define a solution, or compare alternatives.'
+    printf '%s\n' '- MUST NOT: use `$clarify-task` for direct implementation, explanation, status, or review requests.'
+    printf '%s\n' '- NEVER run `git commit` or `git push`, or create, update, merge, close, or publish anything on GitHub, unless the user explicitly authorizes that exact action in the current conversation.'
+    printf '%s\n' '- Requests to implement, execute, finish, fix, review, or ship authorize only local file changes and tests; they do not authorize commits, pushes, PR changes, comments, reviews, merges, releases, or other remote writes.'
+    printf '%s\n' '- Treat each authorization as single-use and limited to the named repository, PR or issue, content, and action. If authorization is absent or ambiguous, show the intended action or content and wait.'
+    printf '%s\n' "$clarify_end"
+  } > "$agents_file"
+  rm -f "$tmp"
+}
+
+install_global_clarify_task() {
+  sync_global_clarify_task "$HOME/.codex"
+  write_clarify_agents_block "$HOME/.codex/AGENTS.md"
+}
+
+install_profile_files() {
+  local install_root="$1"
+  local profile="$2"
+  [[ -d "$source_root/profiles/$profile" ]] || die "unknown profile: $profile"
+  ensure_dir "$install_root/profiles/$profile"
+  rm -rf "$install_root/profiles/$profile/bin"
+  copy_tree "$source_root/profiles/$profile" "$install_root/profiles/$profile"
+  find "$install_root/profiles/$profile/bin" -type f -exec chmod +x {} + 2>/dev/null || true
+  find "$install_root/profiles/$profile/hooks" -type f -exec chmod +x {} + 2>/dev/null || true
+}
+
+install_bin_links() {
+  local install_root="$1"
+  local profile="${2:-}"
+  local tool target
+  ensure_dir "$default_bin_dir"
+  ln -sfn "$install_root/bin/codex-flow" "$default_bin_dir/codex-flow"
+
+  for tool in codexw execplan fixreview wexecplan wexecreview wfixreview; do
+    if [[ -L "$default_bin_dir/$tool" ]]; then
+      target="$(readlink "$default_bin_dir/$tool")"
+      [[ "$target" == "$install_root/"* ]] && rm -f "$default_bin_dir/$tool"
+    fi
+  done
+
+  if [[ "$profile" == "pec" ]]; then
+    for tool in pec-codex execreview prcontext; do
+      ln -sfn "$install_root/.codex/bin/$tool" "$default_bin_dir/$tool"
+    done
+  fi
+}
+
+write_shell_block() {
+  local install_root="$1"
+  local zshrc="${ZDOTDIR:-$HOME}/.zshrc"
+  local tmp
+  ensure_dir "$(dirname -- "$zshrc")"
+  [[ -f "$zshrc" ]] || touch "$zshrc"
+  tmp="$(mktemp)"
+
+  awk -v begin="$managed_begin" -v end="$managed_end" '
+    $0 == begin { skip=1; next }
+    $0 == end { skip=0; next }
+    skip != 1 { print }
+  ' "$zshrc" > "$tmp"
+
+  {
+    cat "$tmp"
+    printf '\n%s\n' "$managed_begin"
+    printf 'source "%s/shell/init.zsh"\n' "$install_root"
+    printf '%s\n' "$managed_end"
+  } > "$zshrc"
+  rm -f "$tmp"
+}
+
+remove_shell_block() {
+  local zshrc="${ZDOTDIR:-$HOME}/.zshrc"
+  local tmp
+  [[ -f "$zshrc" ]] || return 0
+  tmp="$(mktemp)"
+  awk -v begin="$managed_begin" -v end="$managed_end" '
+    $0 == begin { skip=1; next }
+    $0 == end { skip=0; next }
+    skip != 1 { print }
+  ' "$zshrc" > "$tmp"
+  mv "$tmp" "$zshrc"
+}
+
+write_profile_config() {
+  local install_root="$1"
+  local profile="$2"
+  local repo="$3"
+  local obsidian_review_dir="${4:-}"
+  ensure_dir "$install_root/config"
+  {
+    printf 'export CODEX_FLOW_PROFILE_%s_ENABLED=1\n' "$(printf '%s' "$profile" | tr '[:lower:]' '[:upper:]')"
+    if [[ "$profile" == "pec" ]]; then
+      printf 'export PEC_ROOT=%q\n' "$repo"
+      if [[ -n "$obsidian_review_dir" ]]; then
+        printf 'export CODEX_EXECREVIEW_OBSIDIAN_DIR=%q\n' "$obsidian_review_dir"
+      fi
+    fi
+  } > "$install_root/config/$profile.env"
+}
+
+parse_common_install_args() {
+  install_root="$default_install_root"
+  profile=""
+  repo="${PEC_ROOT:-$HOME/projects/bridge/pec}"
+  obsidian_review_dir="${CODEX_EXECREVIEW_OBSIDIAN_DIR:-}"
+
+  while (($#)); do
+    case "$1" in
+      --profile)
+        [[ $# -ge 2 ]] || die "missing value for --profile"
+        profile="$2"
+        shift
+        ;;
+      --profile=*)
+        profile="${1#--profile=}"
+        ;;
+      --repo)
+        [[ $# -ge 2 ]] || die "missing value for --repo"
+        repo="$2"
+        shift
+        ;;
+      --repo=*)
+        repo="${1#--repo=}"
+        ;;
+      --obsidian-review-dir)
+        [[ $# -ge 2 ]] || die "missing value for --obsidian-review-dir"
+        obsidian_review_dir="$2"
+        shift
+        ;;
+      --obsidian-review-dir=*)
+        obsidian_review_dir="${1#--obsidian-review-dir=}"
+        ;;
+      --install-root)
+        [[ $# -ge 2 ]] || die "missing value for --install-root"
+        install_root="$2"
+        shift
+        ;;
+      --install-root=*)
+        install_root="${1#--install-root=}"
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        die "unexpected argument: $1"
+        ;;
+    esac
+    shift
+  done
+}
+
+cmd_install() {
+  local install_root profile repo obsidian_review_dir
+  parse_common_install_args "$@"
+
+  install_core_files "$install_root"
+  install_global_clarify_task
+  install_global_skill_links "$install_root"
+  install_bin_links "$install_root"
+  write_shell_block "$install_root"
+
+  if [[ -n "$profile" ]]; then
+    [[ "$profile" == "pec" ]] || die "unknown profile: $profile"
+    [[ -d "$repo" ]] || die "PEC repo not found: $repo"
+    install_profile_files "$install_root" "$profile"
+    write_profile_config "$install_root" "$profile" "$repo" "$obsidian_review_dir"
+    sync_codex_template "$install_root/.codex" "$repo/.codex"
+    install_bin_links "$install_root" "$profile"
+  fi
+
+  note "installed core at $install_root"
+  [[ -n "$profile" ]] && note "installed profile: $profile ($repo)"
+  [[ -n "$obsidian_review_dir" ]] && note "obsidian review mirror: $obsidian_review_dir"
+  note "restart zsh or run: source \"$install_root/shell/init.zsh\""
+}
+
+cmd_uninstall() {
+  local install_root="$default_install_root"
+  while (($#)); do
+    case "$1" in
+      --install-root)
+        [[ $# -ge 2 ]] || die "missing value for --install-root"
+        install_root="$2"
+        shift
+        ;;
+      --install-root=*)
+        install_root="${1#--install-root=}"
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        die "unexpected argument: $1"
+        ;;
+    esac
+    shift
+  done
+  remove_shell_block
+  for codex_home in "$HOME/.codex"; do
+    if [[ -L "$codex_home/skills/gh-cli-review" && "$(readlink "$codex_home/skills/gh-cli-review")" == "$install_root/"* ]]; then
+      rm -f "$codex_home/skills/gh-cli-review"
+    fi
+  done
+  for codex_home in "$HOME/.codex"; do
+    agents_file="$codex_home/AGENTS.md"
+    [[ -f "$agents_file" ]] || continue
+    tmp="$(mktemp)"
+    awk -v begin="$clarify_begin" -v end="$clarify_end" '
+      $0 == begin { skip=1; next }
+      $0 == end { skip=0; next }
+      skip != 1 { print }
+    ' "$agents_file" > "$tmp"
+    mv "$tmp" "$agents_file"
+    rm -rf "$codex_home/skills/clarify-task"
+  done
+  for tool in codex-flow pec-codex execplan execreview fixreview prcontext; do
+    if [[ -L "$default_bin_dir/$tool" ]]; then
+      target="$(readlink "$default_bin_dir/$tool")"
+      if [[ "$target" == "$install_root/"* ]]; then
+        rm -f "$default_bin_dir/$tool"
+      fi
+    fi
+  done
+  note "removed shell block and managed symlinks"
+}
+
+cmd_project_bootstrap() {
+  local install_root="$default_install_root"
+  local profile="pec"
+  local repo="${PEC_ROOT:-$HOME/projects/bridge/pec}"
+  local all=0
+  local refresh=0
+  local runtime_root
+  local -a wtfix_args=()
+
+  while (($#)); do
+    case "$1" in
+      --profile)
+        [[ $# -ge 2 ]] || die "missing value for --profile"
+        profile="$2"
+        shift
+        ;;
+      --profile=*)
+        profile="${1#--profile=}"
+        ;;
+      --repo)
+        [[ $# -ge 2 ]] || die "missing value for --repo"
+        repo="$2"
+        shift
+        ;;
+      --repo=*)
+        repo="${1#--repo=}"
+        ;;
+      --obsidian-review-dir)
+        [[ $# -ge 2 ]] || die "missing value for --obsidian-review-dir"
+        shift
+        ;;
+      --obsidian-review-dir=*)
+        ;;
+      --all-worktrees)
+        all=1
+        ;;
+      --refresh)
+        refresh=1
+        ;;
+      --install-root)
+        [[ $# -ge 2 ]] || die "missing value for --install-root"
+        install_root="$2"
+        shift
+        ;;
+      --install-root=*)
+        install_root="${1#--install-root=}"
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        die "unexpected argument: $1"
+        ;;
+    esac
+    shift
+  done
+
+  [[ "$profile" == "pec" ]] || die "project bootstrap currently supports only profile: pec"
+  [[ -d "$repo" ]] || die "repo not found: $repo"
+
+  if [[ -f "$install_root/shell/core.zsh" ]]; then
+    runtime_root="$install_root"
+  else
+    runtime_root="$source_root"
+  fi
+
+  [[ -f "$runtime_root/shell/core.zsh" ]] || die "core runtime not found"
+  [[ -f "$runtime_root/profiles/pec/shell/pec.zsh" ]] || die "PEC runtime not found"
+  sync_codex_template "$runtime_root/.codex" "$repo/.codex"
+
+  (( refresh )) && wtfix_args+=(--refresh)
+  (( all )) && wtfix_args+=(--all)
+
+  CODEX_FLOW_HOME="$runtime_root" PEC_ROOT="$repo" zsh -fc '
+    source "$CODEX_FLOW_HOME/shell/core.zsh"
+    source "$CODEX_FLOW_HOME/profiles/pec/shell/pec.zsh"
+    cd "$PEC_ROOT" || exit 1
+    wtfix "$@"
+  ' codex-flow-bootstrap "${wtfix_args[@]}"
+}
+
+cmd_profile() {
+  local action="${1:-}"
+  local profile="${2:-}"
+  local all=0
+  local refresh=0
+  local -a passthrough=()
+  shift $(( $# >= 1 ? 1 : 0 ))
+  shift $(( $# >= 1 ? 1 : 0 ))
+
+  [[ "$action" == "install" ]] || die "unsupported profile action: ${action:-<missing>}"
+  [[ "$profile" == "pec" ]] || die "unsupported profile: ${profile:-<missing>}"
+
+  while (($#)); do
+    case "$1" in
+      --all-worktrees)
+        all=1
+        ;;
+      --refresh)
+        refresh=1
+        ;;
+      *)
+        passthrough+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  cmd_install --profile pec "${passthrough[@]}"
+  local -a bootstrap_args=(--profile pec "${passthrough[@]}")
+  (( all )) && bootstrap_args+=(--all-worktrees)
+  (( refresh )) && bootstrap_args+=(--refresh)
+  cmd_project_bootstrap "${bootstrap_args[@]}"
+}
+
+toml_has_section() {
+  local file="$1"
+  local section="$2"
+  [[ -f "$file" ]] && grep -q "^\[$section\]" "$file"
+}
+
+cmd_doctor() {
+  local install_root="$default_install_root"
+  local config="$HOME/.codex/config.toml"
+  local status=0
+
+  while (($#)); do
+    case "$1" in
+      --install-root)
+        [[ $# -ge 2 ]] || die "missing value for --install-root"
+        install_root="$2"
+        shift
+        ;;
+      --install-root=*)
+        install_root="${1#--install-root=}"
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        die "unexpected argument: $1"
+        ;;
+    esac
+    shift
+  done
+
+  note "doctor: codex-flow"
+  if [[ -f "$install_root/shell/init.zsh" ]]; then
+    note "  OK   core installed at $install_root"
+  else
+    err "  FAIL core not installed at $install_root"
+    status=1
+  fi
+
+  if [[ -f "$install_root/config/pec.env" ]]; then
+    note "  OK   profile pec configured"
+    if grep -q '^export CODEX_EXECREVIEW_OBSIDIAN_DIR=' "$install_root/config/pec.env"; then
+      review_mirror="$(sed -n 's/^export CODEX_EXECREVIEW_OBSIDIAN_DIR=//p' "$install_root/config/pec.env" | head -n1)"
+      note "  OK   obsidian review mirror configured: $review_mirror"
+    fi
+  else
+    note "  WARN profile pec not configured (optional)"
+  fi
+
+  if command -v codex >/dev/null 2>&1; then
+    note "  OK   codex command available"
+  else
+    err "  FAIL codex command not found in PATH"
+    status=1
+  fi
+
+  if command -v gh >/dev/null 2>&1; then
+    note "  OK   gh command available"
+    if gh auth token -h github.com >/dev/null 2>&1; then
+      note "  OK   gh credential configured for github.com"
+      if gh api user --jq .login >/dev/null 2>&1; then
+        note "  OK   GitHub API reachable with configured credential"
+      else
+        err "  WARN GitHub API unavailable; check network access or credential validity"
+      fi
+    else
+      err "  WARN gh has no credential for github.com"
+      err "       run: gh auth login -h github.com"
+    fi
+  else
+    err "  FAIL gh command not found in PATH"
+    status=1
+  fi
+
+  for section in "mcp_servers.openaiDeveloperDocs" "mcp_servers.context7" "mcp_servers.serena"; do
+    if toml_has_section "$config" "$section"; then
+      note "  OK   ~/.codex/config.toml has [$section]"
+    else
+      err "  WARN missing [$section] in ~/.codex/config.toml"
+    fi
+  done
+
+  return "$status"
+}
+
+main() {
+  local cmd="${1:-}"
+  [[ -n "$cmd" ]] || { usage; exit 2; }
+  shift || true
+
+  case "$cmd" in
+    install) cmd_install "$@" ;;
+    uninstall) cmd_uninstall "$@" ;;
+    doctor) cmd_doctor "$@" ;;
+    profile) cmd_profile "$@" ;;
+    project)
+      [[ "${1:-}" == "bootstrap" ]] || die "unsupported project action: ${1:-<missing>}"
+      shift
+      cmd_project_bootstrap "$@"
+      ;;
+    -h|--help|help) usage ;;
+    *) die "unknown command: $cmd" ;;
+  esac
+}
+
+main "$@"

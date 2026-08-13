@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=NCLS-Black-Waybar
+Comment=NCLS-Black-Waybar theme"
+Encoding=UTF-8
+
+
+[X-GNOME-Metatheme]
+GtkTheme=NCLS-Black-Waybar
+MetacityTheme=Flat-Remix-Dark-Metacity
+IconTheme=breeze-dark
+CursorTheme=Adwaita
+ButtonLayout=:minimize,maximize,close

@@ -13,15 +13,39 @@ repository cloned on `main`. Then run:
 ./install.sh
 ```
 
-The script asks for `INSTALL` before it starts. It installs the package
-manifests with `yay`, then mirrors every path in
+The installer asks for the sudo password once and keeps that authorization
+alive for the duration of the run. Its terminal UI shows the safety warning,
+offers **repair/update** or **clean reinstall**, detects NVIDIA hardware and,
+when applicable, displays a driver selection. No `INSTALL` phrase is required.
+
+Repair mode is idempotent and can be run again after an interrupted or failed
+installation. Clean reinstall moves the managed Oh My Zsh and Code Flow
+runtime directories to a dated backup, then recreates the complete profile.
+It does not delete documents, credentials, accounts, or unrelated packages.
+
+The script installs the package manifests with `yay`, then mirrors every path in
 [`assets/snapshot-paths.txt`](assets/snapshot-paths.txt). Existing files in
 those paths are overwritten, and a dated manual backup is stored under
 `~/.local/state/arch-hyprland/backups/`. It does not partition disks, create
 users, copy SSH keys, enable a snapshot timer, or upload anything.
 
-Some old Arch/AUR packages may disappear. Those failures are written to the
-installation log and do not stop the remaining profile from being applied.
+Package failures are collected and reported together. The installer does not
+apply the profile or display a success screen while a required package is
+missing. A final diagnostic verifies Hyprland configuration, greetd/UWSM,
+Waybar selectors, wallpaper, theme, Zsh, Eza, Codex CLI and Code Flow.
+
+The credential-free Code Flow core is bundled under `assets/code-flow`; the
+machine does not need access to its separate source repository. If Codex CLI
+is absent, the installer uses the current standalone Linux installer from the
+official OpenAI documentation. Authentication remains an explicit first-run
+step and no account token is copied by this project.
+
+For non-interactive recovery or testing, use:
+
+```bash
+./install.sh --mode repair --nvidia open --yes
+./install.sh --mode clean --nvidia skip --yes
+```
 
 ## PC base: create and publish the profile
 

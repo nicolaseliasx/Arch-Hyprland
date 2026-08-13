@@ -30,6 +30,18 @@ done
 [[ -d "$DOTFILES_DIR" ]] || die "snapshot directory does not exist: $DOTFILES_DIR"
 [[ -f "$PATHS_FILE" ]] || die "path manifest does not exist: $PATHS_FILE"
 
+for required_path in \
+  .config/hypr/hyprland.lua \
+  .config/hypr/shaders/digital-vibrance-90.frag \
+  .config/waybar/config \
+  .config/waybar/style.css \
+  .config/rofi/.current_wallpaper \
+  .themes/NCLS-Black-Waybar/gtk-3.0/gtk.css \
+  pictures/wallpapers/583256.jpg \
+  .zshrc; do
+  [[ -e "$DOTFILES_DIR/$required_path" ]] || die "required profile artifact is missing: $required_path"
+done
+
 if ! "$ASSUME_YES"; then
   cat <<EOF
 This will overwrite every path in $PATHS_FILE under $TARGET_HOME.
@@ -40,8 +52,8 @@ EOF
   [[ "$confirmation" == 'OVERWRITE' ]] || die 'cancelled'
 fi
 
-backup_dir="$BACKUP_ROOT/backup-$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$backup_dir"
+mkdir -p "$BACKUP_ROOT"
+backup_dir="$(mktemp -d "$BACKUP_ROOT/backup-$(date +%Y%m%d_%H%M%S).XXXXXX")"
 printf 'source=%s\ncreated_at=%s\n' "$REPO_ROOT" "$(date --iso-8601=seconds)" >"$backup_dir/manifest.env"
 
 while IFS= read -r relative_path || [[ -n "$relative_path" ]]; do
@@ -74,6 +86,29 @@ while IFS= read -r relative_path || [[ -n "$relative_path" ]]; do
     log "base profile does not contain $relative_path; target removed"
   fi
 done <"$PATHS_FILE"
+
+# Links that intentionally cross from ~/.config to another managed profile
+# path are rejected by rsync --safe-links when .config is copied in isolation.
+# Recreate only audited links whose resolved source target remains inside the
+# versioned profile and exists on the installed target.
+restore_profile_link() {
+  local relative_path="$1"
+  local source_link="$DOTFILES_DIR/$relative_path"
+  local target_link="$TARGET_HOME/$relative_path"
+  local link_value resolved_source resolved_target
+  [[ -L "$source_link" ]] || die "expected profile selector is not a symlink: $relative_path"
+  link_value="$(readlink "$source_link")"
+  resolved_source="$(realpath -m "$(dirname "$source_link")/$link_value")"
+  [[ "$resolved_source" == "$DOTFILES_DIR/"* ]] || die "profile selector escapes snapshot: $relative_path"
+  resolved_target="$(realpath -m "$(dirname "$target_link")/$link_value")"
+  [[ "$resolved_target" == "$TARGET_HOME/"* && -e "$resolved_target" ]] || die "profile selector target is missing: $relative_path"
+  mkdir -p "$(dirname "$target_link")"
+  ln -sfn "$link_value" "$target_link"
+}
+
+restore_profile_link .config/waybar/config
+restore_profile_link .config/waybar/style.css
+restore_profile_link .config/rofi/.current_wallpaper
 
 for scripts_dir in "$TARGET_HOME/.config/hypr/scripts" "$TARGET_HOME/.config/hypr/UserScripts"; do
   [[ -d "$scripts_dir" ]] || continue

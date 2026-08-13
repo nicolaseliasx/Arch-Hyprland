@@ -9,6 +9,7 @@ blueman
 blueprint-compiler
 bluez
 bluez-utils
+breeze-icons
 brightnessctl
 btop
 cava
@@ -22,6 +23,7 @@ docker
 docker-compose
 earlyoom
 efibootmgr
+eza
 ethtool
 fastfetch
 ffmpegthumbnailer
@@ -51,7 +53,6 @@ kvantum
 libnewt
 libpulse
 libspng
-libva-nvidia-driver
 linux
 linux-firmware
 linux-headers
@@ -67,8 +68,6 @@ noto-fonts
 noto-fonts-emoji
 npm
 ntfs-3g
-nvidia-open-dkms
-nvidia-settings
 nvm
 nvtop
 nwg-displays

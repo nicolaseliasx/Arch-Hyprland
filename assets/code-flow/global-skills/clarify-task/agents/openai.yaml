@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clarify task"
+  short_description: "Resolve decisions before delivering a plan"
+  default_prompt: "Use $clarify-task to investigate the request, ask adaptive questions, and deliver the final plan only after all decisions and research are resolved."

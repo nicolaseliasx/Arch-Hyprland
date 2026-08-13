@@ -2,6 +2,7 @@
 # Directories are mirrored exactly on restore; a missing source means the target
 # is removed so the installed profile matches the PC base.
 .config
+.themes/NCLS-Black-Waybar
 .zshrc
 .p10k.zsh
 .gitconfig

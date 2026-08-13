@@ -81,6 +81,7 @@ copy_config() {
     '--exclude=obsidian/***'
     '--exclude=Codex/***'
     '--exclude=hypr/wallpaper_effects/***'
+    '--exclude=hypr/.initial_startup_done'
     '--exclude=gh/***'
     '--exclude=gcloud/***'
     '--exclude=rclone/***'
@@ -112,6 +113,7 @@ copy_config() {
     # Keep the fallback's exclusions aligned with the rsync rules above.
     find "$destination" -type d \( -name '.cache' -o -name '.local' -o -name 'Cache' -o -name 'GPUCache' -o -name 'Code Cache' -o -name 'workspaceStorage' -o -name 'Local Storage' -o -name 'IndexedDB' -o -name 'Service Worker' -o -name 'Session Storage' -o -name 'google-chrome' -o -name 'google-chrome-for-testing' -o -name 'chromium' -o -name 'BraveSoftware' -o -name 'Mozilla' -o -name 'mozilla' -o -name 'Slack' -o -name 'discord' -o -name 'Code' -o -name 'JetBrains' -o -name 'pulse' -o -name 'gh' -o -name 'gcloud' -o -name 'rclone' -o -name 'aws' -o -name 'azure' -o -name 'op' -o -name 'codex' -o -name 'Codex' -o -name 'codex-mobile' -o -name 'configstore' -o -name 'anytype' -o -name 'obsidian' \) -prune -exec rm -rf -- {} +
     rm -rf -- "$destination/JetBrains" "$destination/Code" "$destination/pulse" "$destination/opencode/node_modules" "$destination/anytype" "$destination/obsidian" "$destination/Codex" "$destination/hypr/wallpaper_effects" "$destination/configstore"
+    rm -f -- "$destination/hypr/.initial_startup_done"
     find "$destination" -type f \( -name '*.log' -o -name '*.sqlite' -o -name '*.sqlite-*' -o -name '*.db' -o -name '*.pem' -o -name '*.key' -o -name '*.env' -o -name '.env.*' -o -name 'Cookies*' -o -iname '*token*' -o -iname '*secret*' -o -iname '*password*' -o -iname '*accounts*' \) -delete
     find "$destination" -type l \( -lname '/*' -o -lname '*..*' \) -delete
     rm -f -- "$destination/systemd/user/arch-hyprland-snapshot.service" "$destination/systemd/user/arch-hyprland-snapshot.timer" "$destination/systemd/user/timers.target.wants/arch-hyprland-snapshot.timer"
@@ -190,6 +192,17 @@ normalize_portable_profile() {
   if [[ -f "$dotfiles/.config/hypr/workspaces.conf" ]]; then
     sed -i '/^[[:space:]]*workspace[[:space:]]*=.*,[[:space:]]*monitor:/d' "$dotfiles/.config/hypr/workspaces.conf"
   fi
+  if [[ -f "$dotfiles/.config/hypr/monitors.lua" ]]; then
+    cat >"$dotfiles/.config/hypr/monitors.lua" <<'EOF'
+-- Portable fallback: preferred resolution, automatic placement and scale 1.
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
+EOF
+  fi
+  if [[ -f "$dotfiles/.config/hypr/workspaces.lua" ]]; then
+    cat >"$dotfiles/.config/hypr/workspaces.lua" <<'EOF'
+-- Workspaces intentionally are not pinned to connector names.
+EOF
+  fi
   if [[ -f "$dotfiles/.config/hypr/hyprlock.conf" ]]; then
     sed -i 's/^[[:space:]]*monitor[[:space:]]*=.*$/    monitor =/' "$dotfiles/.config/hypr/hyprlock.conf"
   fi
@@ -202,12 +215,35 @@ normalize_portable_profile() {
       -e "s|hyprctl eval 'hl.monitor({ output = \"DP-2\", disabled = false })'|hyprctl dispatch dpms on|" \
       "$dotfiles/.config/hypr/scripts/LockScreen.sh"
   fi
+
+  # rsync --safe-links correctly drops absolute links from the source machine.
+  # Recreate only the known visual selectors as relative links after confirming
+  # that both the source and target stay inside the captured home profile.
+  local relative_link source_link resolved_source relative_target destination_link link_value
+  for relative_link in \
+    .config/waybar/config \
+    .config/waybar/style.css \
+    .config/rofi/.current_wallpaper; do
+    source_link="$SOURCE_HOME/$relative_link"
+    [[ -L "$source_link" ]] || continue
+    resolved_source="$(readlink -f "$source_link" 2>/dev/null || true)"
+    [[ "$resolved_source" == "$SOURCE_HOME/"* ]] || continue
+    relative_target="${resolved_source#"$SOURCE_HOME/"}"
+    [[ -e "$dotfiles/$relative_target" ]] || continue
+    destination_link="$dotfiles/$relative_link"
+    mkdir -p "$(dirname "$destination_link")"
+    link_value="$(realpath --relative-to="$(dirname "$destination_link")" "$dotfiles/$relative_target")"
+    ln -sfn "$link_value" "$destination_link"
+  done
 }
 
 capture_packages() {
   local packages_dir="$STAGE_DIR/packages"
   mkdir -p "$packages_dir"
-  pacman -Qqen | LC_ALL=C sort -u >"$packages_dir/pacman-explicit.txt"
+  {
+    pacman -Qqen | grep -vxE '^(nvidia|nvidia-dkms|nvidia-open|nvidia-open-dkms|nvidia-settings|nvidia-utils|libva-nvidia-driver)$' || true
+    printf '%s\n' breeze-icons eza
+  } | LC_ALL=C sort -u >"$packages_dir/pacman-explicit.txt"
   # Only preserve explicitly installed foreign packages. `yay -Qqm` also
   # includes dependency and split debug packages that cannot be installed by
   # name on a fresh machine (for example waybar-git-debug).
@@ -220,6 +256,12 @@ validate_stage() {
   [[ -d "$STAGE_DIR/dotfiles/.config" ]] || die 'snapshot validation failed: .config was not captured'
   [[ -f "$STAGE_DIR/packages/pacman-explicit.txt" ]] || die 'snapshot validation failed: pacman list is missing'
   [[ -f "$STAGE_DIR/packages/aur-explicit.txt" ]] || die 'snapshot validation failed: AUR list is missing'
+  [[ -f "$STAGE_DIR/dotfiles/.config/hypr/shaders/digital-vibrance-90.frag" ]] || die 'snapshot validation failed: screen shader is missing'
+  [[ -f "$STAGE_DIR/dotfiles/pictures/wallpapers/583256.jpg" ]] || die 'snapshot validation failed: default wallpaper is missing'
+  [[ -d "$STAGE_DIR/dotfiles/.themes/NCLS-Black-Waybar" ]] || die 'snapshot validation failed: GTK theme is missing'
+  [[ -e "$STAGE_DIR/dotfiles/.config/waybar/config" ]] || die 'snapshot validation failed: active Waybar layout is missing'
+  [[ -e "$STAGE_DIR/dotfiles/.config/waybar/style.css" ]] || die 'snapshot validation failed: active Waybar style is missing'
+  [[ -e "$STAGE_DIR/dotfiles/.config/rofi/.current_wallpaper" ]] || die 'snapshot validation failed: active wallpaper link is missing'
   local oversized
   oversized="$(find "$STAGE_DIR/dotfiles" -type f -size +95M -print -quit)"
   [[ -z "$oversized" ]] || die "snapshot validation failed: file exceeds GitHub's practical size limit: $oversized"

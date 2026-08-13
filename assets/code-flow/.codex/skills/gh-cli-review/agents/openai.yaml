@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub CLI Review"
+  short_description: "Contexto e reviews GitHub seguros via gh"
+  default_prompt: "Use $gh-cli-review para carregar o contexto completo deste PR e preparar achados numerados para seleção."
