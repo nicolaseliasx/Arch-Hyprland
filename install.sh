@@ -67,7 +67,11 @@ show_error() {
   fi
 }
 die() { show_error "$*"; exit 1; }
-trap 'die "The step at line $LINENO failed. No successful completion was recorded."' ERR
+on_error() {
+  local exit_code="$1" line="$2" command="$3"
+  die "Command failed in step '$CURRENT_STEP' (line $line, exit $exit_code): $command"
+}
+trap 'on_error "$?" "$LINENO" "$BASH_COMMAND"' ERR
 
 usage() {
   cat <<'EOF'
@@ -359,7 +363,11 @@ main() {
   complete_step
 
   begin_step 'Running final diagnostics'
-  "$REPO_ROOT/install-scripts/validate-install.sh" >>"$LOG_FILE" 2>&1
+  if ! "$REPO_ROOT/install-scripts/validate-install.sh" >>"$LOG_FILE" 2>&1; then
+    log 'Final diagnostics failed; the latest diagnostic output follows.'
+    tail -n 80 "$LOG_FILE" >&2
+    die "Final diagnostics failed. Review the FAIL entries above and in $LOG_FILE"
+  fi
   complete_step
 
   if (( THEME_WARNINGS || OPTIONAL_FAILURES )); then

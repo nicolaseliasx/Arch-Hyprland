@@ -20,6 +20,8 @@ grep -Fq 'output = "", mode = "preferred", position = "auto", scale = 1' assets/
 grep -Fq 'screen_shader = home .. "/.config/hypr/shaders/digital-vibrance-90.frag"' assets/dotfiles/.config/hypr/config/settings.lua
 grep -Fq 'wallDIR="$HOME/pictures/wallpapers"' assets/dotfiles/.config/hypr/UserScripts/WallpaperRandom.sh
 grep -Fq 'WallustSwww.sh" "$image_path"' assets/dotfiles/.config/hypr/UserScripts/WallpaperSelect.sh
+! grep -Eq '^windowrule = .*splitratio' assets/dotfiles/.config/hypr/UserConfigs/WindowRules.conf
+grep -Fq 'Final diagnostics failed; the latest diagnostic output follows.' install.sh
 [[ -e assets/dotfiles/.config/waybar/config ]]
 [[ -e assets/dotfiles/.config/waybar/style.css ]]
 [[ -e assets/dotfiles/.config/rofi/.current_wallpaper ]]
