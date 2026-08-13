@@ -231,7 +231,9 @@ yay_install() {
   # A checksum failure is commonly a stale per-package clone/source cache.  Do
   # not weaken makepkg validation and do not clean Yay's global cache.
   retry=true
-  local cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/yay" cache_path="$cache_root/$package"
+  local cache_root cache_path
+  cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/yay"
+  cache_path="$cache_root/$package"
   if [[ -d "$cache_path" && "$cache_path" == "$cache_root/"* ]]; then
     log "AUR package $package failed; removing only its build cache: $cache_path"
     rm -rf -- "$cache_path"
